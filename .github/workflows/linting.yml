@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - develop
+      - add_actinia
   pull_request:
 
 jobs:
