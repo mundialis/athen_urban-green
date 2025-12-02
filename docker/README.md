@@ -3,15 +3,15 @@
 ## Local setup
 All of the following must be launched from within the `docker` directory.
 
-### First time only:
+### First time only
 * Create an **`.env` file** with the following structure in the `docker` directory:
-```
+```yaml
 ACTINIA_USER=<USER>
 ACTINIA_PW=<PASSWORD>
 ```
 
 ### Build and start docker
-Note: docker-compose-plugin needs to be installed: https://docs.docker.com/compose/install/linux/
+Note: [docker-compose-plugin](https://docs.docker.com/compose/install/linux/) needs to be installed
 
 build:
 ```bash
@@ -31,7 +31,7 @@ docker compose -f docker-compose.yml -p athen_urban-green down
 ```
 
 #### Access actinia (in Browser)
-```
+```python
 # e.g., to see the version
 http://localhost:8088/api/v3/version
 
