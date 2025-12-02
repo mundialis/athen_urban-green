@@ -1,0 +1,4 @@
+# ignores the grassdb, valkey db dump and potential actinia responses saved as json
+docker/valkey_data/dump.rdb
+docker/.env
+resp.json
