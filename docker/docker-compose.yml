@@ -8,7 +8,7 @@ services:
     volumes:
       # - ./actinia_data/grassdb:/actinia_core/grassdb
       # uncomment to mount grass-gis-addons etc while developing:
-      - ../grass-gis-addons:/src/grass-gis-addons
+     #  - ../grass-gis-addons:/src/grass-gis-addons
       # - ../processing/output:/src/output
       # depending on deployment and persistence, mount these folders
       # - ./actinia_data/userdata:/actinia_core/userdata
