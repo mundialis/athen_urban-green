@@ -1,0 +1,8 @@
+# ignores the grassdb, valkey db dump and potential actinia responses saved as json
+docker/valkey_data/dump.rdb
+docker/.env
+.pylintrc
+.pylintrc_allowed_to_fail
+resp.json
+ruff-github-workflows.toml
+ruff-merged.toml

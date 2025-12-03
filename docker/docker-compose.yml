@@ -1,0 +1,48 @@
+version: "3"
+services:
+
+  actinia:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      # - ./actinia_data/grassdb:/actinia_core/grassdb
+      # uncomment to mount grass-gis-addons etc while developing:
+     #  - ../grass-gis-addons:/src/grass-gis-addons
+      # - ../processing/output:/src/output
+      # depending on deployment and persistence, mount these folders
+      # - ./actinia_data/userdata:/actinia_core/userdata
+      # - ./actinia_data/geodata_dir:/mnt/geodata
+      # - ./actinia_data/workspace/temp_db:/actinia_core/workspace/temp_db
+      # - ./actinia_data/workspace/tmp:/actinia_core/workspace/tmp
+      # - ./actinia_data/resources:/actinia_core/resources
+    environment:
+      ACTINIA_USER: ${ACTINIA_USER}
+      ACTINIA_PW: ${ACTINIA_PW}
+    ports:
+      - "8088:8088"
+    depends_on:
+      - valkey
+
+  valkey:
+    image: valkey/valkey:8.1-alpine
+    volumes:
+      - ./valkey_data:/data
+    environment:
+      - VALKEY_PASS_FILE=/data/config/.valkey
+    command: [
+      "sh", "-c",
+      '
+      docker-entrypoint.sh
+      "/data/config/valkey.conf"
+      --requirepass "$$(cat $$VALKEY_PASS_FILE)"
+      '
+    ]
+
+  geoserver:
+    image: docker.osgeo.org/geoserver:2.28.0
+    volumes:
+    - ./geoserver_data:/data
+    environment:
+      GEOSERVER_ADMIN_USER: ${GEOSERVER_USER}
+      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_PW}
