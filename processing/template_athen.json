@@ -1,0 +1,10 @@
+{
+	"list": [
+		{
+			"module": "g.mapset",
+			"id": "g_mapset",
+			"flags": "l"
+		}
+	],
+	"version": "1"
+}

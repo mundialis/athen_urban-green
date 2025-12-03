@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# # create default projects in mounted (!) directory
-# [ ! -d "/actinia_core/grassdb/latlong_wgs84" ] && grass --text -e -c 'EPSG:4326' /actinia_core/grassdb/latlong_wgs84
+# create default projects in mounted (!) directory
+[ ! -d "/actinia_core/grassdb/latlong_wgs84" ] && grass --text -e -c 'EPSG:4326' /actinia_core/grassdb/latlong_wgs84
 
 actinia-user create -u "$ACTINIA_USER" -w "$ACTINIA_PW" -r superadmin -g superadmin -c 100000000000 -n 1000 -t 31536000
 actinia-user update -u "$ACTINIA_USER" -w "$ACTINIA_PW"
