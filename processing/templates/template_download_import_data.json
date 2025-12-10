@@ -1,0 +1,42 @@
+{
+	"id": "template_download_import_data",
+	"description": "Downloads and imports S2 scene by ID - Script",
+	"template": {
+		"version": "1",
+		"list": [
+			{
+				"module": "i.s2_id.download",
+				"id": "i.s2_id.download_1",
+				"inputs": [
+					{
+						"param": "s2_id",
+						"value": "{{ S2_ID }}"
+					},
+					{
+						"param": "download_dir",
+						"value": "{{ download_dir }}"
+					}
+				]
+			},
+			{
+				"module": "i.sentinel.import",
+				"id": "i.sentinel.import_1",
+				"inputs": [
+					{
+						"param": "input",
+						"value": "{{ download_dir }}"
+					},
+					{
+						"param": "pattern",
+						"value": "B(02_1|03_1|04_1|08_1|8A_2|11_2|12_2)0m"
+					},
+					{
+						"param": "memory",
+						"value": "3000"
+					}
+				],
+				"flags": "r"
+			}
+		]
+	}
+}
