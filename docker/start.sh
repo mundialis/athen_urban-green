@@ -14,7 +14,7 @@
 ########################################################################
 
 # create default GRASS project
-[ ! -d "/actinia_core/grassdb/latlong_wgs84" ] && grass --text -e -c 'EPSG:4326' /actinia_core/grassdb/latlong_wgs84
+[ ! -d "/actinia_core/grassdb/athen_urban-green_epsg32635" ] && grass --text -e -c 'EPSG:32635' /actinia_core/grassdb/athen_urban-green_epsg32635
 
 # create actinia user
 actinia-user create -u "$ACTINIA_USER" -w "$ACTINIA_PW" -r superadmin -g superadmin -c 100000000000 -n 1000 -t 31536000
