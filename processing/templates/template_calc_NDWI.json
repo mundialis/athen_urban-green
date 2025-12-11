@@ -1,5 +1,5 @@
 {
-	"id": "index_NDWI",
+	"id": "template_calc_NDWI",
 	"description": "Normalised Difference Water Index (NDWI) [-1 .. +1]",
 	"template": {
 		"version": "1",
