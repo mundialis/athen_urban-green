@@ -10,20 +10,20 @@
 				},
 				{
 					"param": "download_dir",
-					"value": "/home/data/"
+					"value": "/home/data/s2"
 				}
 			]
 		},
 		{
 			"id": "python_1",
 			"exe": "python",
-			"params": ["/repo/scripts/remove_data.py", "/home/data"]
+			"params": ["/src/processing/scripts/remove_data.py", "/home/data"]
 		},
 		{
 			"id": "python_2",
 			"exe": "python",
 			"params": [
-				"/repo/scripts/rename_bands.py"
+				"/src/processing/scripts/rename_bands.py"
 			]
 		},
 		{

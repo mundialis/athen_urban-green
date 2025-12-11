@@ -1,2 +1,2 @@
-i.sentinel.download
-#i.s2_id.download,/src/grass-gis-addons/i.s2_id.download
+i.sentinel.import
+i.s2_id.download,/src/grass-gis-addons/i.s2_id.download

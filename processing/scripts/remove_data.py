@@ -15,5 +15,6 @@ def main():
         else:
             shutil.rmtree(item_path)
 
+
 if __name__ == "__main__":
     main()

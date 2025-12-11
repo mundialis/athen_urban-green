@@ -52,15 +52,15 @@ import grass.script as grass
 
 def main():
     # set Sentinel-2 scene ID
-    # example: 'S2B_MSIL2A_20240109T103329_N0510_R108_T32ULB_20240109T114910'  
+    # example: 'S2B_MSIL2A_20240109T103329_N0510_R108_T32ULB_20240109T114910'
     id = options["s2_id"]
-       
+
     # set download directory
     download_dir = options["download_dir"]
 
     # check if the directory exists
     if not os.path.exists(download_dir):
-    # create the directory
+        # create the directory
         os.makedirs(download_dir)
         print(f"Directory '{download_dir}' created.")
 
@@ -69,14 +69,13 @@ def main():
 
     # set copernicus data space as preferred download provider
     dag.set_preferred_provider("cop_dataspace")
-   
+
     # split ID
-    id_split = id.split('_')
+    id_split = id.split("_")
 
     # define search criterias
     # S2 product type: L1C or L2A
     product_type = f"S2_MSI_{id_split[1][3:]}"
-
 
     search_criteria = {
         "productType": product_type,

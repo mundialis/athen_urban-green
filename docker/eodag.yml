@@ -20,7 +20,7 @@ cop_dataspace:
     search: # Search parameters configuration
     download:
         extract:
-        output_dir: /src
+        output_dir:
     auth:
         credentials:
             username: ${EODAG_USER}
