@@ -58,6 +58,24 @@
 					"value": "index_ndvi"
 				}
 			]
+		},
+		{
+			"id": "template_calc_NDWI_1",
+			"module": "template_calc_NDWI",
+			"inputs": [
+				{
+					"param": "green",
+					"value": "B03"
+				},
+				{
+					"param": "nir",
+					"value": "B08"
+				},
+				{
+					"param": "index_name",
+					"value": "index_ndwi"
+				}
+			]
 		}
 	],
 	"version": "1"
