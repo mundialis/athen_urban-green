@@ -42,6 +42,17 @@
 			"flags": "g"
 		},
 		{
+			"id": "r.mask_1",
+			"module": "r.mask",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "MSK"
+				}
+			],
+			"flags": "i"
+		},
+		{
 			"id": "template_calc_NDVI_1",
 			"module": "template_calc_NDVI",
 			"inputs": [
@@ -76,6 +87,17 @@
 					"value": "index_ndwi"
 				}
 			]
+		},
+		{
+			"id": "r.mask_2",
+			"module": "r.mask",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "MSK"
+				}
+			],
+			"flags": "r"
 		}
 	],
 	"version": "1"

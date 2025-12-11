@@ -31,11 +31,19 @@
 						"value": "B(02_1|03_1|04_1|08_1|8A_2|11_2|12_2)0m"
 					},
 					{
+						"param": "cloud_probability_threshold",
+						"value": "65"
+					},
+					{
+						"param": "cloud_output",
+						"value": "raster"
+					},
+					{
 						"param": "memory",
 						"value": "3000"
 					}
 				],
-				"flags": "r"
+				"flags": "cr"
 			}
 		]
 	}
