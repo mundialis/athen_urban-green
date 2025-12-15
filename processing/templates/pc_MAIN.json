@@ -1,0 +1,104 @@
+{
+	"list": [
+		{
+			"id": "template_download_import_data_1",
+			"module": "template_download_import_data",
+			"inputs": [
+				{
+					"param": "S2_ID",
+					"value": "S2C_MSIL2A_20250819T104041_N0511_R008_T32ULB_20250819T155312"
+				},
+				{
+					"param": "download_dir",
+					"value": "/home/data/s2"
+				}
+			]
+		},
+		{
+			"id": "python_1",
+			"exe": "python",
+			"params": ["/src/processing/scripts/remove_data.py", "/home/data"]
+		},
+		{
+			"id": "python_2",
+			"exe": "python",
+			"params": [
+				"/src/processing/scripts/rename_bands.py"
+			]
+		},
+		{
+			"id": "g.region_1",
+			"module": "g.region",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "B02"
+				},
+				{
+					"param": "res",
+					"value": "10"
+				}
+			],
+			"flags": "g"
+		},
+		{
+			"id": "r.mask_1",
+			"module": "r.mask",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "MSK"
+				}
+			],
+			"flags": "i"
+		},
+		{
+			"id": "template_calc_NDVI_1",
+			"module": "template_calc_NDVI",
+			"inputs": [
+				{
+					"param": "red",
+					"value": "B04"
+				},
+				{
+					"param": "nir",
+					"value": "B08"
+				},
+				{
+					"param": "index_name",
+					"value": "index_ndvi"
+				}
+			]
+		},
+		{
+			"id": "template_calc_NDWI_1",
+			"module": "template_calc_NDWI",
+			"inputs": [
+				{
+					"param": "green",
+					"value": "B03"
+				},
+				{
+					"param": "nir",
+					"value": "B08"
+				},
+				{
+					"param": "index_name",
+					"value": "index_ndwi"
+				}
+			]
+		},
+		{
+			"id": "r.mask_2",
+			"module": "r.mask",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "MSK"
+				}
+			],
+			"flags": "r"
+		}
+	],
+	"version": "1"
+}

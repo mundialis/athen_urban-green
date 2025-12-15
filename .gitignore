@@ -1,8 +1,11 @@
 # ignores the grassdb, valkey db dump and potential actinia responses saved as json
+docker/eodag.yml
 docker/valkey_data/dump.rdb
 docker/.env
+processing/.ipynb_checkpoints/
 .pylintrc
 .pylintrc_allowed_to_fail
 resp.json
 ruff-github-workflows.toml
 ruff-merged.toml
+

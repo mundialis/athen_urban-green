@@ -9,3 +9,4 @@ exclude = .git
 max-line-length = 79
 
 per-file-ignores =
+    ./grass-gis-addons/i.s2_id.download/i.s2_id.download.py: E501

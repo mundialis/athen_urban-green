@@ -6,19 +6,15 @@ services:
       context: ..
       dockerfile: docker/Dockerfile
     volumes:
-      # - ./actinia_data/grassdb:/actinia_core/grassdb
       # uncomment to mount grass-gis-addons etc while developing:
-     #  - ../grass-gis-addons:/src/grass-gis-addons
-      # - ../processing/output:/src/output
-      # depending on deployment and persistence, mount these folders
-      # - ./actinia_data/userdata:/actinia_core/userdata
-      # - ./actinia_data/geodata_dir:/mnt/geodata
-      # - ./actinia_data/workspace/temp_db:/actinia_core/workspace/temp_db
-      # - ./actinia_data/workspace/tmp:/actinia_core/workspace/tmp
-      # - ./actinia_data/resources:/actinia_core/resources
+      - ../processing/scripts:/src/processing/scripts
+      # - ../processing/input:/src/input
+      # - ../grass-gis-addons:/src/grass-gis-addons
     environment:
       ACTINIA_USER: ${ACTINIA_USER}
       ACTINIA_PW: ${ACTINIA_PW}
+      EODAG_USER: ${EODAG_USER}
+      EODAG_PW: ${EODAG_PW}
     ports:
       - "8088:8088"
     depends_on:
