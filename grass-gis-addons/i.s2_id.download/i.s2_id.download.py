@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# ruff: noqa: D100
 #
 ############################################################################
 #
@@ -9,20 +10,14 @@
 # COPYRIGHT:   (C) 2024 by mundialis GmbH & Co. KG and the GRASS
 #              Development Team
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or
-# (at your option) any later version.
+# SPDX-FileCopyrightText: (c) 2025 by mundialis GmbH & Co. KG
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+# SPDX-License-Identifier: GPL-3.0-or-later
 #
 ############################################################################
 
 # %module
-# % description: Downloads S2 scene from Copernicus Data Space by given scene ID.
+# % description: Download S2scene from Copernicus Data Space by given scene ID.
 # % keyword: raster
 # % keyword: Sentinel-2
 # % keyword: eodag
@@ -40,28 +35,25 @@
 # % required: yes
 # %end
 
-import os
-
-from datetime import datetime, timedelta
-
-from eodag import EODataAccessGateway
-from eodag.crunch import FilterProperty
+from pathlib import Path
 
 import grass.script as grass
+from eodag import EODataAccessGateway
 
 
-def main():
+def main() -> None:
+    """Download S2 scene from Copernicus Data Space by given ID."""
     # set Sentinel-2 scene ID
     # example: 'S2B_MSIL2A_20240109T103329_N0510_R108_T32ULB_20240109T114910'
-    id = options["s2_id"]
+    s2_id = options["s2_id"]
 
     # set download directory
     download_dir = options["download_dir"]
 
     # check if the directory exists
-    if not os.path.exists(download_dir):
+    if not Path(download_dir).exists():
         # create the directory
-        os.makedirs(download_dir)
+        Path(download_dir).mkdir(parents=True)
         print(f"Directory '{download_dir}' created.")
 
     # create EODataAccessGateway
@@ -71,7 +63,7 @@ def main():
     dag.set_preferred_provider("cop_dataspace")
 
     # split ID
-    id_split = id.split("_")
+    id_split = s2_id.split("_")
 
     # define search criterias
     # S2 product type: L1C or L2A
@@ -79,7 +71,7 @@ def main():
 
     search_criteria = {
         "productType": product_type,
-        "id": id,
+        "id": s2_id,
     }
 
     # search products
@@ -91,14 +83,16 @@ def main():
     print(f"Filtered products: {all_products}")
 
     # download S2 scene
-    if len(all_products) == 1 and all_products[0].properties["id"] == id:
-        print(f"Found product for scene {id}")
+    if len(all_products) == 1 and all_products[0].properties["id"] == s2_id:
+        print(f"Found product for scene {s2_id}")
         paths = dag.download_all(
-            all_products, output_dir=download_dir, extract=False
+            all_products,
+            output_dir=download_dir,
+            extract=False,
         )
         print(f"Downloaded to {paths}")
     else:
-        print(f"Did not find product for scene {id}")
+        print(f"Did not find product for scene {s2_id}")
 
 
 if __name__ == "__main__":
