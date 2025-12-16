@@ -1,0 +1,18 @@
+{
+    "list": [
+        {
+            "id": "template_MAIN_1",
+            "module": "template_MAIN_loop",
+            "inputs": [
+                {
+                    "param": "iteration",
+                    "value": [
+                        "S2A_MSIL2A_20251202T091401_N0511_R050_T35SKC_20251202T122209",
+                        "S2C_MSIL2A_20251203T092351_N0511_R093_T35SKC_20251203T130213"
+                    ]
+                }
+            ]
+        }
+    ],
+    "version": "1"
+}
