@@ -18,7 +18,9 @@ import grass.script as grass
 def main() -> None:
     """Rename bands in process chain for handling S2 scenes."""
     print(grass.parse_command("g.list", type="raster", mapset="."))
-    for band in list(grass.parse_command("g.list", type="raster", pattern="T*", mapset=".")):
+    for band in list(
+        grass.parse_command("g.list", type="raster", pattern="T*", mapset=".")
+    ):
         new_name = f"{band.split('_')[2]}"
         grass.run_command(
             "g.rename",
