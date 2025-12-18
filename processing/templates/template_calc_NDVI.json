@@ -6,12 +6,12 @@
 		"list": [
 			{
 				"module": "r.mapcalc",
-				"id": "r.mapcalc_ndvi",
-				"comment": "NDVI = ( NIR - RED ) / ( NIR + RED )",
+				"id": "r.mapcalc_ndvi_scaled",
+				"comment": "scaled NDVI = (( NIR - RED ) / ( NIR + RED )) * 1000",
 				"inputs": [
 					{
 						"param": "expression",
-						"value": "{{ index_name }} = float( {{ nir }} - {{ red }} ) / float( {{ nir }} + {{ red }} )"
+						"value": "{{ index_name }}_scaled = (float( {{ nir }} - {{ red }} ) / float( {{ nir }} + {{ red }} ))*1000"
 					}
 				]
 			},
@@ -21,11 +21,41 @@
 				"inputs": [
 					{
 						"param": "map",
-						"value": "{{ index_name }}"
+						"value": "{{ index_name }}_scaled"
 					},
 					{
 						"param": "color",
 						"value": "ndvi"
+					}
+				]
+			},
+			{
+				"module":"r.reclass",
+				"id": "r.reclass_ndvi",
+				"inputs":[
+					{
+						"param": "input",
+						"value":"{{ index_name }}_scaled"
+					},
+					{
+						"param":"output",
+						"value":"{{ index_name }}_reclassified"
+					},
+					{
+						"param":"rules",
+						"value":"/src/index_classification/ndvi_4_classes"
+					}
+
+				]
+			},
+			{
+				"module": "r.mapcalc",
+				"id": "r.mapcalc_ndvi",
+				"comment": "NDVI = scaled NDVI / 1000",
+				"inputs": [
+					{
+						"param": "expression",
+						"value": "{{ index_name }} = {{ index_name }}_scaled / 1000"
 					}
 				]
 			},
@@ -42,7 +72,22 @@
 						"value": "{{ index_name }}"
 					}
 				]
+			},
+			{
+				"id": "exporter_2",
+				"module": "exporter",
+				"outputs": [
+					{
+						"export": {
+							"type": "raster",
+							"format": "GTiff"
+						},
+						"param": "map",
+						"value": "{{ index_name }}_reclassified"
+					}
+				]
 			}
+				
 		]
 	}
 }

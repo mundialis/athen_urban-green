@@ -75,8 +75,8 @@
 			"module": "template_calc_NDWI",
 			"inputs": [
 				{
-					"param": "green",
-					"value": "B03"
+					"param": "swir",
+					"value": "B11"
 				},
 				{
 					"param": "nir",
