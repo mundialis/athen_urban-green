@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: D100
+# ruff: noqa: D100, COM812
 ############################################################################
 # MODULE:      rename_bands
 # AUTHOR(S):   Jonas Pischke
