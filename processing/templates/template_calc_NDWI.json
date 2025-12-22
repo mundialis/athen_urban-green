@@ -7,7 +7,7 @@
 			{
 				"module": "r.mapcalc",
 				"id": "r.mapcalc_ndwi_scaled",
-				"comment": "scaled NDWI = (( NIR - SWIR ) / ( NIR + SWIR )) *1000 (after Gao, 1996)",
+				"comment": "scaled NDWI = (( NIR - SWIR ) / ( NIR + SWIR )) * 1000 (after Gao, 1996)",
 				"inputs": [
 					{
 						"param": "expression",
