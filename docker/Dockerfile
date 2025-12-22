@@ -22,6 +22,7 @@ done < /src/grass_addons_list.csv
 COPY docker/start.sh /src/start.sh
 COPY docker/eodag.yml /root/.config/eodag/eodag.yml
 COPY processing/input/aoi /src/aoi
+COPY processing/input/index_classification /src/index_classification
 
 COPY processing/templates /src/actinia-module-plugin/config/templates/pc_templates
 

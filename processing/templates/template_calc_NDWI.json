@@ -6,12 +6,12 @@
 		"list": [
 			{
 				"module": "r.mapcalc",
-				"id": "r.mapcalc_ndwi",
-				"comment": "NDWI = ( GREEN - NIR ) / ( GREEN + NIR ) (after McFeeters, 1996)",
+				"id": "r.mapcalc_ndwi_scaled",
+				"comment": "scaled NDWI = (( NIR - SWIR ) / ( NIR + SWIR )) * 1000 (after Gao, 1996)",
 				"inputs": [
 					{
 						"param": "expression",
-						"value": "{{ index_name }} = float( {{ green }} - {{ nir }} ) / float( {{ green }} + {{ nir }} )"
+						"value": "{{ index_name }}_scaled = (float( {{ nir }} - {{ swir }} ) / float( {{ nir }} + {{ swir }} ))*1000"
 					}
 			  ]
 			},
@@ -22,11 +22,41 @@
 				[
 					{
 						"param": "map",
-						"value": "{{ index_name }}"
+						"value": "{{ index_name }}_scaled"
 					},
 					{
 						"param": "color",
 						"value": "ndwi"
+					}
+				]
+			},
+			{
+				"module":"r.reclass",
+				"id": "r.reclass_ndwi",
+				"inputs":[
+					{
+						"param": "input",
+						"value":"{{ index_name }}_scaled"
+					},
+					{
+						"param":"output",
+						"value":"{{ index_name }}_reclassified"
+					},
+					{
+						"param":"rules",
+						"value":"/src/index_classification/ndwi_3_classes"
+					}
+
+				]
+			},
+			{
+				"module": "r.mapcalc",
+				"id": "r.mapcalc_ndwi",
+				"comment": "NDWI = scaled NDWI / 1000",
+				"inputs": [
+					{
+						"param": "expression",
+						"value": "{{ index_name }} = {{ index_name }}_scaled / 1000"
 					}
 				]
 			},
@@ -43,7 +73,21 @@
                         "value": "{{ index_name }}"
                     }
                 ]
-            }
+            },
+			{
+				"id": "exporter_2",
+				"module": "exporter",
+				"outputs": [
+					{
+						"export": {
+							"type": "raster",
+							"format": "GTiff"
+						},
+						"param": "map",
+						"value": "{{ index_name }}_reclassified"
+					}
+				]
+			}
 		]
 	}
 }
