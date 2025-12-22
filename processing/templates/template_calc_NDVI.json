@@ -86,8 +86,7 @@
 						"value": "{{ index_name }}_reclassified"
 					}
 				]
-			}
-				
+			}				
 		]
 	}
 }
