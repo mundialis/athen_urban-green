@@ -29,22 +29,7 @@
 			"params": [
 				"/src/processing/scripts/rename_bands.py"
 			]
-		},
-		{
-			"id": "g.region_1",
-			"module": "g.region",
-			"inputs": [
-				{
-					"param": "raster",
-					"value": "B02"
-				},
-				{
-					"param": "res",
-					"value": "10"
-				}
-			],
-			"flags": "g"
-		},
+		},		
 		{
 			"id": "r.mask_1",
 			"module": "r.mask",

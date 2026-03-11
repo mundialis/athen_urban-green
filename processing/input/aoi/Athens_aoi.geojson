@@ -1,0 +1,8 @@
+{
+"type": "FeatureCollection",
+"name": "athens_aoi",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "gid": 1, "width": 0.231631, "height": 0.271493, "area": 0.062886, "perimeter": 1.006248 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 23.611555721241146, 37.843094050212756 ], [ 23.843186716247445, 37.843094050212756 ], [ 23.843186716247445, 38.114587123429445 ], [ 23.611555721241146, 38.114587123429445 ], [ 23.611555721241146, 37.843094050212756 ] ] ] } }
+]
+}

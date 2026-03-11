@@ -1,6 +1,21 @@
 {
     "list": [
         {
+			"id": "g.region_4",
+			"module": "g.region",
+			"inputs": [
+				{
+					"param": "vector",
+					"value": "aoi@vector_data"
+				},
+				{
+					"param": "res",
+					"value": "10"
+				}
+			],
+			"flags": "g"
+		},
+        {
             "id": "template_MAIN_1",
             "module": "template_MAIN_loop",
             "inputs": [
