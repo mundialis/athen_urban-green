@@ -1,0 +1,17 @@
+{
+    "list": [
+        {
+			"id": "python_1",
+			"exe": "python",
+			"params": [
+				"/src/processing/scripts/test.py"
+			],
+            "stdout": {
+					"id": "python_1_meta",
+					"format": "json",
+                    "delimiter": "|"
+				}
+		}
+    ],
+    "version": "1"
+}
