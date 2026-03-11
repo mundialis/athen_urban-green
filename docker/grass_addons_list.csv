@@ -1,2 +1,3 @@
 i.sentinel.import
 i.s2_id.download,/src/grass-gis-addons/i.s2_id.download
+i.s2_id.filter,/src/grass-gis-addons/i.s2_id.filter

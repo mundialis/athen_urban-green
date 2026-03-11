@@ -4,7 +4,7 @@
 			"id": "python_1",
 			"exe": "python",
 			"params": [
-				"/src/processing/scripts/test.py"
+				"/src/processing/scripts/filter_S2_scenes.py"
 			],
             "stdout": {
 					"id": "python_1_meta",

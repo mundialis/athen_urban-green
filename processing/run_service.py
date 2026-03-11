@@ -21,22 +21,32 @@ from requests.auth import HTTPBasicAuth
 
 ### CONFIG ###
 
-GRASS_PROJECT = "athen_urban-green_epsg32634"
-START = "2025-12-01"
-END = "2025-12-05"
+# Filtering parameters
+START_TIME = "2025-12-01"
+END_TIME = "2025-12-05"
 TILE_ID = "34SGH"
 MAX_CLOUD_COVER = 100 # set max cloud cover
+# AOI
+# ToDO get automatically from vector (is in grass project) 
+# maybe directly in addon (runs in grass anyways)
+LONMIN = 23.61
+LATMIN = 37.84
+LONMAX = 23.84
+LATMAX = 38.11
+
+# process chain paths
 MAIN_PC_PATH = "templates/"
-S2_ID_PROCESS_CHAIN = "pc_filter_S2.json"
+S2_ID_PROCESS_CHAIN = "pc_filter_S2_v2.json"
 MAIN_PROCESS_CHAIN = "pc_loop_ids.json"
 
 # variables to set the actinia host, version, and user
+grass_project = "athen_urban-green_epsg32634"
 actinia_baseurl = "http://localhost:8088"
 actinia_version = "v3"
 actinia_url = actinia_baseurl + "/api/" + actinia_version
 # Todo: Get credentials from .env
-actinia_auth = HTTPBasicAuth("actinia", "actinia")  
-actinia_endpoint = f"{actinia_url}/locations/{GRASS_PROJECT}/processing_export"
+actinia_auth = HTTPBasicAuth("actinia", "actinia")
+actinia_endpoint = f"{actinia_url}/locations/{grass_project}/processing_export"
 
 ### functions ###
 
@@ -99,20 +109,24 @@ def main():
     print("Start Sentinel-2 processing for Athens...")
     print("Using actinia at:")
     print(actinia_endpoint)
+    # adding more variables
     print("======================================")
     print("Filter Sentinel-2 scenes...")
-    print("======================================")
-
-    # make a POST request to the actinia data API
-    request_url = f"{actinia_url}/locations/{GRASS_PROJECT}/processing_export"
-
-    print("actinia POST request:")
-    print(request_url)
-    print("---")
 
     # open process chain for S2 ID filtering
-    with open(MAIN_PC_PATH + "pc_filter_S2.json", encoding="utf-8") as file:
-        process_chain = json.load(file)
+    with open(MAIN_PC_PATH + S2_ID_PROCESS_CHAIN, encoding="utf-8") as f:
+        process_chain = json.load(f)
+
+    # insert search parameters into process chain
+    # variables need to be strings for actinia process chain!!!
+    process_chain["list"][0]["inputs"][0]["value"] = START_TIME
+    process_chain["list"][0]["inputs"][1]["value"] = END_TIME
+    process_chain["list"][0]["inputs"][2]["value"] = TILE_ID
+    process_chain["list"][0]["inputs"][3]["value"] = str(MAX_CLOUD_COVER)
+    process_chain["list"][0]["inputs"][4]["value"] = str(LONMIN)
+    process_chain["list"][0]["inputs"][5]["value"] = str(LONMAX)
+    process_chain["list"][0]["inputs"][6]["value"] = str(LATMIN)
+    process_chain["list"][0]["inputs"][7]["value"] = str(LATMAX)
 
     # send POST request for S2 ID filtering
     _json_response, status_request_url = post_request(actinia_endpoint, actinia_auth, process_chain)
@@ -124,6 +138,7 @@ def main():
     status_response = get_request(status_request_url.replace("https", "http"), actinia_auth)
 
     # extract S2 IDs from status response
+    # ToDo: in case of error/no scenes, handle it
     stdout = status_response["process_log"][0]["stdout"]
     S2_scenes_dict = json.loads(stdout)
     print(f"Found <{len(S2_scenes_dict)}> Sentinel-2 scene IDs:")
@@ -142,14 +157,14 @@ def main():
     process_chain["list"][1]["inputs"][0]["value"] = list(S2_scenes_dict.values())
 
     # make the POST request to start the processing
-    json_response, status_request_url = post_request(actinia_endpoint, actinia_auth, process_chain)
+    status_response, status_request_url = post_request(actinia_endpoint, actinia_auth, process_chain)
 
     # keep polling the status until finished
-    while json_response["status"] in {"accepted", "running"}:
+    while status_response["status"] in {"accepted", "running"}:
         status_response = get_request(status_request_url.replace("https", "http"), actinia_auth)
-        print(f"Polling status: {status_response['status']}")
-        print(f"Status request URL: {status_request_url}")
+        print(f"Polling status: {status_response['status']}")        
         print(f"Doing: {status_response['message']}")
+        # print(f"Status request URL: {status_request_url}")
         print("======================================")
         time.sleep(30)
 
