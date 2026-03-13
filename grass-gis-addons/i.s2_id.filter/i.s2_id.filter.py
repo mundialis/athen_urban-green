@@ -6,7 +6,7 @@
 #
 # PURPOSE:     Remove downloaded S2 scenes
 #
-# SPDX-FileCopyrightText: (c) 2025 by mundialis GmbH & Co. KG
+# SPDX-FileCopyrightText: (c) 2026 by mundialis GmbH & Co. KG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,49 +22,67 @@
 # %option
 # % key: start_time
 # % description: Start time for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
 # %end
 
 # %option
 # % key: end_time
 # % description: End time for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
 # %end
 
 # %option
 # % key: tile_id
 # % description: S2 tile ID for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
 # %end
 
 # %option
 # % key: cloud_cover
 # % description: Maximum cloud cover for filtering S2 scenes
 # % required: no
+# % answer: 100
+# % type: string
 # %end
 
 # %option
 # % key: lonmin
 # % description: Minimum longitude for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
 # %end
 
 # %option
 # % key: lonmax
 # % description: Maximum longitude for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
 # %end
 
 # %option
 # % key: latmin
 # % description: Minimum latitude for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
 # %end
 
 # %option
 # % key: latmax
 # % description: Maximum latitude for filtering S2 scenes
-# % required: yes
+# % required: no
+# % type: string
+# %end
+
+# %flag
+# % key: a
+# % description: Keep downloaded data in the download directory
+# %end
+
+# %rules
+# % collective: lonmin,lonmax,latmin,latmax
 # %end
 
 import sys
@@ -75,29 +93,43 @@ from eodag import EODataAccessGateway
 
 def main():
     # Get options
-    start = str(options["start_time"])
-    end = str(options["end_time"])
-    tile_id = str(options["tile_id"])
-    cloud_cover = int(options["cloud_cover"])
-    lonmin = float(options["lonmin"])
-    lonmax = float(options["lonmax"])
-    latmin = float(options["latmin"])
-    latmax = float(options["latmax"])
+    start = options["start_time"]
+    end = options["end_time"]
+    tile_id = options["tile_id"]
+    cloud_cover = options["cloud_cover"]
+    lonmin = options["lonmin"]
+    lonmax = options["lonmax"]
+    latmin = options["latmin"]
+    latmax = options["latmax"]
+    a = flags["a"]
+
+    # get bbox from region (must have been set before)
+    if a:
+        bbox_ll = grass.parse_command(
+            "g.region", format="json", flags="b", quiet=True
+        )
+        lonmin = bbox_ll["ll_w"]
+        lonmax = bbox_ll["ll_e"]
+        latmin = bbox_ll["ll_s"]
+        latmax = bbox_ll["ll_n"]
 
     # define search criteria
     search_criteria = {
         "productType": "S2MSI2A",
         "start": start,
         "end": end,
-        "tileIdentifier": tile_id,
         "geom": {
-            "lonmin": lonmin,
-            "latmin": latmin,
-            "lonmax": lonmax,
-            "latmax": latmax,
+            "lonmin": float(lonmin),
+            "latmin": float(latmin),
+            "lonmax": float(lonmax),
+            "latmax": float(latmax),
         },
         "cloudCover": cloud_cover,
     }
+
+    # add tile ID to search criteria
+    if tile_id:
+        search_criteria["tileIdentifier"] = tile_id
 
     # initialize EODataAccessGateway
     dag = EODataAccessGateway()
@@ -105,6 +137,7 @@ def main():
     # search for S2 scenes matching the criteria
     all_products = dag.search_all(**search_criteria)
 
+    # extract S2 IDs from search results
     s2_ids = [
         all_products[i].properties["id"] for i in range(len(all_products))
     ]
