@@ -18,6 +18,9 @@
 [ ! -d "/actinia_core/grassdb/athen_urban-green_epsg32634/vector_data" ] && grass --text -e -c /actinia_core/grassdb/athen_urban-green_epsg32634/vector_data
 grass --text /actinia_core/grassdb/athen_urban-green_epsg32634/vector_data --exec v.import input=/src/aoi/Athens_aoi.geojson output=aoi
 
+# setup eodag configuration
+sh /src/setup_eodag.sh
+
 # create actinia user
 actinia-user create -u "$ACTINIA_USER" -w "$ACTINIA_PW" -r superadmin -g superadmin -c 100000000000 -n 1000 -t 31536000
 actinia-user update -u "$ACTINIA_USER" -w "$ACTINIA_PW"

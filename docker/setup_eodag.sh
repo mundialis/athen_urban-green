@@ -1,4 +1,21 @@
-# -*- coding: utf-8 -*-
+#!/bin/sh
+########################################################################
+#
+# MODULE:       setup_eodag.sh
+#
+# AUTHOR(S):    Jonas Pischke
+#
+# PURPOSE:      This script inserts credentials from .env into EODAG
+#               configuration (eodag.yml).
+#
+# SPDX-FileCopyrightText: (c) 2026 by mundialis GmbH & Co. KG
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+#
+########################################################################
+
+mkdir -p ~/.config/eodag
+cat <<EOF > ~/.config/eodag/eodag.yml
 # Copyright 2018, CS GROUP - France, https://www.csgroup.eu/
 #
 # This file is part of EODAG project
@@ -24,4 +41,5 @@ cop_dataspace:
     auth:
         credentials:
             username: ${EODAG_USER}
-            password: ${EODAG_PW}
+            password: "${EODAG_PW}"
+EOF
