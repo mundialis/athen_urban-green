@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR0915, PLR2004
-
+# ruff: noqa: PLR0915, PLR2004, D100
+#
 ############################################################################
 # MODULE:      start_processing
 # AUTHOR(S):   Jonas Pischke
@@ -69,7 +69,9 @@ def print_as_json(data: dict) -> None:
 
 
 # helper function to verify a request
-def verify_request(request: requests.Response, success_code=200) -> None:
+def verify_request(
+    request: requests.Response, success_code: int = 200
+) -> None:
     """Verify the request."""
     if request.status_code != success_code:
         print(
