@@ -80,17 +80,16 @@
 # % type: string
 # %end
 
-import json
 import datetime
+import json
+
 import grass.script as grass
 import pystac
-
-# Import rio_stac methods
 from rio_stac.stac import create_stac_item
 
 
-def main():
-    """Main function."""
+def main() -> None:
+    """Create STAC item and add it to catalog."""
     # parse options
     asset_paths_str = options["asset_paths"]
     asset_names_str = options["asset_names"]
@@ -108,15 +107,15 @@ def main():
     # create dict from asset_paths and asset_names
     bands_assets = {
         name: pystac.Asset(
-            path, roles=["data"], media_type=pystac.MediaType.COG
+            path, roles=["data"], media_type=pystac.MediaType.COG,
         )
-        for name, path in zip(asset_names, asset_paths)
+        for name, path in zip(asset_names, asset_paths, strict=True)
     }
 
     # extract datetime from Sentinel-2 ID
     # e.g. S2C_MSIL2A_20251203T092351_N0511_R093_T35SKC_20251203T130213
     s2_datetime = datetime.datetime.strptime(
-        s2_id.split("_")[2], "%Y%m%dT%H%M%S"
+        s2_id.split("_")[2], "%Y%m%dT%H%M%S",
     ).replace(tzinfo=datetime.timezone.utc)
 
     # STAC item ID
@@ -146,7 +145,7 @@ def main():
     # add item to collection
     grass.message(
         f"Add STAC item <{item.id}> to collection <{collection.id}> "
-        f"of <{catalog.id}>..."
+        f"of <{catalog.id}>...",
     )
     collection.add_item(item)
 

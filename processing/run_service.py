@@ -5,7 +5,7 @@
 #
 # PURPOSE:     Run complete service
 #
-# SPDX-FileCopyrightText: (c) 2025 by mundialis GmbH & Co. KG
+# SPDX-FileCopyrightText: (c) 2026 by mundialis GmbH & Co. KG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
