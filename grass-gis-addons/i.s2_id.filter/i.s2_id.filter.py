@@ -92,6 +92,7 @@ from eodag import EODataAccessGateway
 
 
 def main():
+    """Main function."""
     # Get options
     start = options["start_time"]
     end = options["end_time"]

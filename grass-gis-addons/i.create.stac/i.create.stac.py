@@ -90,6 +90,7 @@ from rio_stac.stac import create_stac_item
 
 
 def main():
+    """Main function."""
     # parse options
     asset_paths_str = options["asset_paths"]
     asset_names_str = options["asset_names"]
