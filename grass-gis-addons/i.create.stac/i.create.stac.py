@@ -107,7 +107,9 @@ def main() -> None:
     # create dict from asset_paths and asset_names
     bands_assets = {
         name: pystac.Asset(
-            path, roles=["data"], media_type=pystac.MediaType.COG,
+            path,
+            roles=["data"],
+            media_type=pystac.MediaType.COG,
         )
         for name, path in zip(asset_names, asset_paths, strict=True)
     }
@@ -115,7 +117,8 @@ def main() -> None:
     # extract datetime from Sentinel-2 ID
     # e.g. S2C_MSIL2A_20251203T092351_N0511_R093_T35SKC_20251203T130213
     s2_datetime = datetime.datetime.strptime(
-        s2_id.split("_")[2], "%Y%m%dT%H%M%S",
+        s2_id.split("_")[2],
+        "%Y%m%dT%H%M%S",
     ).replace(tzinfo=datetime.timezone.utc)
 
     # STAC item ID
