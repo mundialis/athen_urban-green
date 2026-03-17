@@ -5,8 +5,8 @@
 #
 # AUTHOR(S):    Jonas Pischke
 #
-# PURPOSE:      This script inserts credentials from .env into EODAG
-#               configuration (eodag.yml).
+# PURPOSE:      This script creates the eodag config file (eodag.yml)
+#               and inserts CDSE credentials from .env.
 #
 # SPDX-FileCopyrightText: (c) 2026 by mundialis GmbH & Co. KG
 #

@@ -22,12 +22,10 @@ from requests.auth import HTTPBasicAuth
 ### CONFIG ###
 
 # Filtering parameters
-START_TIME = "2025-12-10"
-END_TIME = "2025-12-20"
+START_TIME = "2025-12-20"
+END_TIME = "2025-12-25"
 TILE_ID = "34SGH"
 # set max cloud cover
-# Do not need to be set
-# Default: 100 % -> outcomment
 MAX_CLOUD_COVER = 100
 
 # AOI
