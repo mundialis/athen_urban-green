@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # ruff: noqa: D100, PTH118, PTH208
+#
 ############################################################################
 # MODULE:      remove_data
 # AUTHOR(S):   Jonas Pischke
@@ -92,7 +93,7 @@ from eodag import EODataAccessGateway
 
 
 def main():
-    """Main function."""
+    """Filter S2 scenes."""
     # Get options
     start = options["start_time"]
     end = options["end_time"]
