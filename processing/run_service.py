@@ -185,7 +185,9 @@ def main():
         process_chain = json.load(f)
 
     # insert Sentinel-2 IDs into the process chain
-    process_chain["list"][1]["inputs"][0]["value"] = list(s2_scenes_dict.values())
+    process_chain["list"][1]["inputs"][0]["value"] = list(
+        s2_scenes_dict.values()
+    )
 
     # make the POST request to start the processing
     status_response, status_request_url = post_request(
