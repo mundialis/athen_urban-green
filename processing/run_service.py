@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# ruff: noqa: PLR0915, PLR2004
+
 ############################################################################
 # MODULE:      start_processing
 # AUTHOR(S):   Jonas Pischke
@@ -55,19 +57,19 @@ ACTINIA_ENDPOINT = f"{ACTINIA_URL}/locations/{GRASS_PROJECT}/processing_export"
 class HasBeenTerminatedError(Exception):
     """Throw exception class."""
 
-    def __init__(self, request_url) -> None:
+    def __init__(self, request_url: str) -> None:
         """Throw exception."""
         super().__init__(f"The resource <{request_url}> has been terminated.")
 
 
 # helper function to print formatted JSON using the json module
-def print_as_json(data) -> None:
+def print_as_json(data: dict) -> None:
     """Print request as json."""
     print(json.dumps(data, indent=2))
 
 
 # helper function to verify a request
-def verify_request(request, success_code=200) -> None:
+def verify_request(request: requests.Response, success_code=200) -> None:
     """Verify the request."""
     if request.status_code != success_code:
         print(
@@ -82,7 +84,9 @@ def verify_request(request, success_code=200) -> None:
 
 
 # function to make a POST request
-def post_request(request_url, actinia_auth, process_chain):
+def post_request(
+    request_url: str, actinia_auth: HTTPBasicAuth, process_chain: dict
+) -> tuple[dict, str]:
     """Make a POST request to the Actinia API."""
     # make the POST request to start the processing
     request = requests.post(
@@ -102,7 +106,7 @@ def post_request(request_url, actinia_auth, process_chain):
 
 
 # function to make a GET request
-def get_request(request_url, actinia_auth):
+def get_request(request_url: str, actinia_auth: HTTPBasicAuth) -> dict:
     """Make a GET request to the Actinia API."""
     request = requests.get(
         url=request_url,
@@ -115,8 +119,8 @@ def get_request(request_url, actinia_auth):
 
 
 # ### MAIN ###
-def main():
-    """Main function."""
+def main() -> None:
+    """Start Sentinel-2 processing."""
     print("======================================")
     print("Start Sentinel-2 processing for Athens...")
     print("Using actinia at:")
@@ -158,7 +162,12 @@ def main():
             # extract S2 IDs from status response
             stdout = status_response["process_log"][1]["stdout"]
             break
-        except Exception as e:
+        except (
+            requests.exceptions.RequestException,
+            KeyError,
+            IndexError,
+            TypeError,
+        ) as e:
             print(f"Error occurred while requesting status: {e}")
             retries += 1
             if retries == 5:
