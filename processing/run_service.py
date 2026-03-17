@@ -19,7 +19,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 
-### CONFIG ###
+# ### CONFIG ###
 
 # Filtering parameters
 START_TIME = "2025-12-20"
@@ -52,7 +52,7 @@ actinia_url = actinia_baseurl + "/api/" + actinia_version
 actinia_auth = HTTPBasicAuth("actinia", "actinia")
 actinia_endpoint = f"{actinia_url}/locations/{grass_project}/processing_export"
 
-### FUNCTIONS ###
+# ### FUNCTIONS ###
 
 
 # helper function to print formatted JSON using the json module
@@ -116,7 +116,7 @@ def get_request(request_url, actinia_auth):
     return json_response
 
 
-### MAIN ###
+# ### MAIN ###
 def main():
     print("======================================")
     print("Start Sentinel-2 processing for Athens...")
@@ -207,7 +207,7 @@ def main():
         time.sleep(30)
 
     print(f"Final status: {status_response['status']}")
-    print(f"Processing finished for:")
+    print("Processing finished for:")
     for s2_id in list(S2_scenes_dict.values()):
         print(f" - {s2_id}")
     print("======================================")

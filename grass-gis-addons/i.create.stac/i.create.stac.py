@@ -144,7 +144,8 @@ def main():
 
     # add item to collection
     grass.message(
-        f"Add STAC item <{item.id}> to collection <{collection.id}> of <{catalog.id}>..."
+        f"Add STAC item <{item.id}> to collection <{collection.id}> "
+        f"of <{catalog.id}>..."
     )
     collection.add_item(item)
 
