@@ -17,9 +17,7 @@ from pathlib import Path
 import requests
 from requests.auth import HTTPBasicAuth
 
-
 # ### CONFIG ###
-
 # Filtering parameters
 START_TIME = "2025-12-20"
 END_TIME = "2025-12-25"
@@ -51,9 +49,8 @@ ACTINIA_URL = ACTINIA_BASEURL + "/api/" + ACTINIA_VERSION
 ACTINIA_AUTH = HTTPBasicAuth("actinia", "actinia")
 ACTINIA_ENDPOINT = f"{ACTINIA_URL}/locations/{GRASS_PROJECT}/processing_export"
 
+
 # ### FUNCTIONS ###
-
-
 # helper function to print formatted JSON using the json module
 class HasBeenTerminatedError(Exception):
     """Throw exception class."""
@@ -188,9 +185,7 @@ def main():
         process_chain = json.load(f)
 
     # insert Sentinel-2 IDs into the process chain
-    process_chain["list"][1]["inputs"][0]["value"] = list(
-        s2_scenes_dict.values()
-    )
+    process_chain["list"][1]["inputs"][0]["value"] = list(s2_scenes_dict.values())
 
     # make the POST request to start the processing
     status_response, status_request_url = post_request(
