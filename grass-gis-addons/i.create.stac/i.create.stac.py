@@ -3,10 +3,11 @@
 #
 ############################################################################
 #
-# MODULE:      i.s2_id.download
+# MODULE:      i.create.stac
 # AUTHOR(S):   Jonas Pischke
 #
-# PURPOSE:     Downloads S2 scene from Copernicus Data Space.
+# PURPOSE:     Creates a STAC item with all parsed bands as assets and adds
+#              it to the specified STAC catalog and collection.
 # COPYRIGHT:   (C) 2024 by mundialis GmbH & Co. KG and the GRASS
 #              Development Team
 #

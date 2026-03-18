@@ -87,7 +87,7 @@
 			},
 			{
 				"module": "r.out.gdal",
-				"id": "r_out_gdal_ndwi",
+				"id": "r_out_gdal_ndwi_categorized",
 				"comment": "Export as COG",
 				"inputs": [
 					{

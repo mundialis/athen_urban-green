@@ -2,10 +2,11 @@
 # ruff: noqa: D100, PTH118, PTH208
 #
 ############################################################################
-# MODULE:      remove_data
+# MODULE:      i.s2_id.filter
 # AUTHOR(S):   Jonas Pischke
 #
-# PURPOSE:     Remove downloaded S2 scenes
+# PURPOSE:     Filter Sentinel-2 scenes by time range, AOI, UTM tile ID 
+# and cloud cover.
 #
 # SPDX-FileCopyrightText: (c) 2026 by mundialis GmbH & Co. KG
 #
@@ -14,7 +15,7 @@
 ############################################################################
 #
 # %module
-# % description: Filter S2 scenes by time range, AOI, tile ID + cloud cover.
+# % description: Filter S2 scenes by time range, AOI, tile ID and cloud cover.
 # % keyword: raster
 # % keyword: Sentinel-2
 # % keyword: eodag
@@ -79,7 +80,7 @@
 
 # %flag
 # % key: a
-# % description: Keep downloaded data in the download directory
+# % description: Use current region as AOI for filtering S2 scenes (overrides lonmin, lonmax, latmin, latmax options)
 # %end
 
 # %rules
