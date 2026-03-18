@@ -5,7 +5,7 @@
 # MODULE:      i.s2_id.filter
 # AUTHOR(S):   Jonas Pischke
 #
-# PURPOSE:     Filter Sentinel-2 scenes by time range, AOI, UTM tile ID 
+# PURPOSE:     Filter Sentinel-2 scenes by time range, AOI, UTM tile ID
 # and cloud cover.
 #
 # SPDX-FileCopyrightText: (c) 2026 by mundialis GmbH & Co. KG
@@ -80,7 +80,7 @@
 
 # %flag
 # % key: a
-# % description: Use current region as AOI for filtering S2 scenes (overrides lonmin, lonmax, latmin, latmax options)
+# % description: Use current region as AOI for filtering S2 scenes
 # %end
 
 # %rules
