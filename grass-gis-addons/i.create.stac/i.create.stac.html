@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<h2>Description</h2>
+
+<em>i.create.stac</em> Creates a STAC item with all parsed raster layers as STAC assets. Adds timestamp based on Sentinel-2 ID. Adds items to given STAC collection and catalog.
+
+
+<h2>EXAMPLES</h2>
+
+<div class="code"><pre>
+i.create.stac assets_paths="data/ndvi.tif,data/ndwi.tif" assets_names="NDVI,NDWI" s2_id="S2A_20210101T000000" stac_id_prefix=s2_indices stac_title="Sentinel-2 NDVI and NDWI" stac_description="Sentinel-2 NDVI and NDWI indices ..." stac_catalog="stac/catalog.json" stac_collection=s2_indices \
+</pre></div>
+
+
+<h2>SEE ALSO</h2>
+
+<em>
+
+</em>
+
+
+<h2>AUTHORS</h2>
+Jonas Pischke, <a href="https://www.mundialis.de/">mundialis GmbH &amp; Co. KG</a>, Germany

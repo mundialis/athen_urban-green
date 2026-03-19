@@ -1,0 +1,59 @@
+{
+  "list": [
+    {
+			"id": "g.region_1",
+			"module": "g.region",
+			"inputs": [
+				{
+					"param": "vector",
+					"value": "aoi@vector_data"
+				},
+				{
+					"param": "res",
+					"value": "10"
+				}
+			],
+			"flags": "g"
+		},
+    {
+      "id": "i_s2_id_filter",
+      "module": "i.s2_id.filter",
+      "inputs": [
+        {
+          "param": "start_time",
+          "value": "_"
+        },
+        {
+          "param": "end_time",
+          "value": "_"
+        },
+        {
+          "param": "tile_id",
+          "value": "_"
+        },
+        {
+          "param": "cloud_cover",
+          "value": "_"
+        },
+        {
+          "param": "lonmin",
+          "value": "_"
+        },
+        {
+          "param": "lonmax",
+          "value": "_"
+        },
+        {
+          "param": "latmin",
+          "value": "_"
+        },
+        {
+          "param": "latmax",
+          "value": "_"
+        }
+      ],
+      "flags": "a"
+    }
+  ],
+  "version": "1"
+}

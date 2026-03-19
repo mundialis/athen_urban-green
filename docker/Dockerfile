@@ -20,7 +20,7 @@ fi; \
 done < /src/grass_addons_list.csv
 
 COPY docker/start.sh /src/start.sh
-COPY docker/eodag.yml /root/.config/eodag/eodag.yml
+COPY docker/setup_eodag.sh /src/setup_eodag.sh
 COPY processing/input/aoi /src/aoi
 COPY processing/input/index_classification /src/index_classification
 

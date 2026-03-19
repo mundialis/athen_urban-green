@@ -39,7 +39,7 @@
 					},
 					{
 						"param":"output",
-						"value":"{{ index_name }}_reclassified"
+						"value":"{{ index_name }}_categorized"
 					},
 					{
 						"param":"rules",
@@ -60,32 +60,54 @@
 				]
 			},
 			{
-				"id": "exporter_1",
-				"module": "exporter",
-				"outputs": [
+				"module": "r.out.gdal",
+				"id": "r_out_gdal_ndvi",
+				"comment": "Export as COG",
+				"inputs": [
 					{
-						"export": {
-							"type": "raster",
-							"format": "GTiff"
-						},
-						"param": "map",
+						"param": "input",
 						"value": "{{ index_name }}"
+					},
+					{
+						"param": "output",
+						"value": "{{ export_dir }}/{{ index_name }}.tif"
+					},
+					{
+						"param": "format",
+						"value": "COG"
+					},
+					{
+						"param": "overviews",
+						"value": "5"
 					}
-				]
+					
+				],
+				"flags": "cm"
 			},
 			{
-				"id": "exporter_2",
-				"module": "exporter",
-				"outputs": [
+				"module": "r.out.gdal",
+				"id": "r_out_gdal_ndvi_categorized",
+				"comment": "Export as COG",
+				"inputs": [
 					{
-						"export": {
-							"type": "raster",
-							"format": "GTiff"
-						},
-						"param": "map",
-						"value": "{{ index_name }}_reclassified"
+						"param": "input",
+						"value": "{{ index_name }}_categorized"
+					},
+					{
+						"param": "output",
+						"value": "{{ export_dir }}/{{ index_name }}_categorized.tif"
+					},
+					{
+						"param": "format",
+						"value": "COG"
+					},
+					{
+						"param": "overviews",
+						"value": "5"
 					}
-				]
+					
+				],
+				"flags": "cm"
 			}				
 		]
 	}

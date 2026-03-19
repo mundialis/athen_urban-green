@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: D100
+# ruff: noqa: D100, PTH118, PTH208
 #
 ############################################################################
 #
@@ -36,9 +36,8 @@
 # %end
 
 from pathlib import Path
-
-import grass.script as grass
 from eodag import EODataAccessGateway
+import grass.script as grass
 
 
 def main() -> None:

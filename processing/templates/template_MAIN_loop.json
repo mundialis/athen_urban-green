@@ -1,0 +1,141 @@
+{
+	"id": "template_MAIN_loop",
+    "description": "MAIN loop template",
+	"template": {
+        "list": [
+			{% for i in iteration %}
+		{
+			"id": "template_download_import_data_1",
+			"module": "template_download_import_data",
+			"inputs": [
+				{
+					"param": "S2_ID",
+					"value": "{{ i }}"
+				},
+				{
+					"param": "download_dir",
+					"value": "/home/data/s2"
+				}
+			]
+		},
+		{
+			"id": "python_1",
+			"exe": "python",
+			"params": ["/src/processing/scripts/remove_data.py", "/home/data"]
+		},
+		{
+			"id": "python_2",
+			"exe": "python",
+			"params": [
+				"/src/processing/scripts/rename_bands.py"
+			]
+		},		
+		{
+			"id": "r.mask_1",
+			"module": "r.mask",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "MSK"
+				}
+			],
+			"flags": "i"
+		},
+		{
+			"id": "template_calc_NDVI_1",
+			"module": "template_calc_NDVI",
+			"inputs": [
+				{
+					"param": "red",
+					"value": "B04"
+				},
+				{
+					"param": "nir",
+					"value": "B08"
+				},
+				{
+					"param": "index_name",
+					"value": "ndvi_{{ i }}"
+				},
+				{
+					"param": "export_dir",
+					"value": "/src/data_tmp"
+				}
+			]
+		},
+		{
+			"id": "template_calc_NDWI_1",
+			"module": "template_calc_NDWI",
+			"inputs": [
+				{
+					"param": "swir",
+					"value": "B11"
+				},
+				{
+					"param": "nir",
+					"value": "B08"
+				},
+				{
+					"param": "index_name",
+					"value": "ndwi_{{ i }}"
+				},
+				{
+					"param": "export_dir",
+					"value": "/src/data_tmp"
+				}
+			]
+		},
+		{
+			"id": "i_create_stac_1",
+			"module": "i.create.stac",
+			"inputs": [
+				{
+					"param": "asset_paths",
+					"value": "/src/data_tmp/ndvi_{{ i }}.tif,/src/data_tmp/ndvi_{{ i }}_categorized.tif,/src/data_tmp/ndwi_{{ i }}.tif,/src/data_tmp/ndwi_{{ i }}_categorized.tif"
+				},
+				{
+					"param": "asset_names",
+					"value": "NDVI,NDVI_classified,NDWI,NDWI_classified"
+				},
+				{
+					"param": "s2_id",
+					"value": "{{ i }}"
+				},
+				{
+					"param": "stac_id_prefix",
+					"value": "athen_urban_green"
+				},
+				{
+					"param": "stac_title",
+					"value": "Urban Green Spaces Athen"
+				},
+				{
+					"param": "stac_description",
+					"value": "NDVI + NDWI raster maps based on Sentinel-2 of Athen for urban green spaces monitoring."
+				},
+				{
+					"param": "stac_catalog",
+					"value": "/src/data_tmp/stac"
+				},
+				{
+					"param": "stac_collection",
+					"value": "urban_green_monitoring"
+				}
+			]
+		},
+		{
+			"id": "r.mask_2",
+			"module": "r.mask",
+			"inputs": [
+				{
+					"param": "raster",
+					"value": "MSK"
+				}
+			],
+			"flags": "r"
+		}{{ "," if not loop.last }}
+            {% endfor %}
+        ],
+        "version": "1"
+    }
+}

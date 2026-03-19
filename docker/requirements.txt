@@ -1,2 +1,4 @@
 grass-gis-helpers==2.3.4
 eodag>=3.10.0
+pystac
+rio-stac
