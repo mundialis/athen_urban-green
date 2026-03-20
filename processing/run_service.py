@@ -20,9 +20,13 @@ import requests
 from requests.auth import HTTPBasicAuth
 
 # ### CONFIG ###
-# Filtering parameters
+# set True to enable automatic time range (from last entry in STAC Catalog)
+AUTOMATIC_TIME_RANGE = False
+STAC_CATALOG_URL = "..." #TODO: Correct Link needs to be added
+# for manual time range definition
 START_TIME = "2025-12-20"
 END_TIME = "2025-12-25"
+# Sentinel-2 tile
 TILE_ID = "34SGH"
 # set max cloud cover
 MAX_CLOUD_COVER = 100
@@ -145,6 +149,11 @@ def main() -> None:
     # process_chain["list"][1]["inputs"][5]["value"] = str(LONMAX)
     # process_chain["list"][1]["inputs"][6]["value"] = str(LATMIN)
     # process_chain["list"][1]["inputs"][7]["value"] = str(LATMAX)
+    process_chain["list"][1]["inputs"][8]["value"] = str(STAC_CATALOG_URL)
+
+    # if AUTOMATIC_TIME_RANGE
+    if AUTOMATIC_TIME_RANGE:
+        process_chain["list"][1]["flags"] = "at"
 
     # send POST request for S2 ID filtering
     _json_response, status_request_url = post_request(
@@ -186,7 +195,7 @@ def main() -> None:
         print(f"Found <{len(s2_scenes_dict)}> Sentinel-2 scene IDs:")
         for _i, s2_id in s2_scenes_dict.items():
             print(f" - {s2_id}")
-
+    
     print("======================================")
     print("Start Download and Processing...")
     print("======================================")
