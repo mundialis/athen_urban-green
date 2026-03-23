@@ -79,8 +79,8 @@
 # %end
 
 # %option
-# % key: stac_catalog
-# % description: Name of STAC catalog for getting start time
+# % key: stac_collection
+# % description: URL to STAC collection for retrieving start time
 # % required: no
 # % type: string
 # %end
@@ -92,12 +92,12 @@
 
 # %flag
 # % key: t
-# % description: Get start time from last entry in STAC catalog
+# % description: Retrieve start time from last entry in STAC collection
 # %end
 
 # %rules
 # % collective: lonmin,lonmax,latmin,latmax
-# % requires: -t,stac_catalog
+# % requires: -t,stac_collection
 # %end
 
 import sys
@@ -119,7 +119,7 @@ def main():
     lonmax = options["lonmax"]
     latmin = options["latmin"]
     latmax = options["latmax"]
-    stac_catalog = options["stac_catalog"]
+    stac_collection = options["stac_collection"]
     a = flags["a"]
     t = flags["t"]
 
@@ -135,16 +135,16 @@ def main():
 
     if t:
         # get end date of temporal extent of STAC collection
-        collection = pystac.Collection.from_file(stac_catalog)
+        collection = pystac.Collection.from_file(stac_collection)
         temp_extent = collection.extent.temporal.intervals
-        end_stac = temp_extent[0][1]
+        end_stac_extent = temp_extent[0][1]
         # check if end time is None
-        if end_stac is None:
+        if end_stac_extent is None:
             # stop processing
             grass.fatal("No end time found in STAC collection")
 
         # overwrite start and end date for filtering range
-        start = end_stac.strftime("%Y-%m-%d")
+        start = end_stac_extent.strftime("%Y-%m-%d")
         end = datetime.date.today().strftime("%Y-%m-%d")
 
     # define search criteria

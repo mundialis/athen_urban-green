@@ -22,7 +22,7 @@ from requests.auth import HTTPBasicAuth
 # ### CONFIG ###
 # set True to enable automatic time range (from last entry in STAC Catalog)
 AUTOMATIC_TIME_RANGE = False
-STAC_CATALOG_URL = "..." #TODO: Correct Link needs to be added
+STAC_COLLECTION_URL = "..." #TODO: Correct Link needs to be added
 # for manual time range definition
 START_TIME = "2025-12-20"
 END_TIME = "2025-12-25"
@@ -149,7 +149,7 @@ def main() -> None:
     # process_chain["list"][1]["inputs"][5]["value"] = str(LONMAX)
     # process_chain["list"][1]["inputs"][6]["value"] = str(LATMIN)
     # process_chain["list"][1]["inputs"][7]["value"] = str(LATMAX)
-    process_chain["list"][1]["inputs"][8]["value"] = str(STAC_CATALOG_URL)
+    process_chain["list"][1]["inputs"][8]["value"] = str(STAC_COLLECTION_URL)
 
     # if AUTOMATIC_TIME_RANGE
     if AUTOMATIC_TIME_RANGE:

@@ -52,7 +52,7 @@
           "value": "_"
         },
         {
-          "param": "stac_catalog",
+          "param": "stac_collection",
           "value": "_"
         }
       ],
