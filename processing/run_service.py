@@ -22,10 +22,10 @@ from requests.auth import HTTPBasicAuth
 # ### CONFIG ###
 # set True to enable automatic time range (from last entry in STAC Catalog)
 AUTOMATIC_TIME_RANGE = False
-STAC_COLLECTION_URL = "..." #TODO: Correct Link needs to be added
+STAC_COLLECTION_URL = "..."  # TODO: Correct Link needs to be added
 # for manual time range definition
-START_TIME = "2025-12-20"
-END_TIME = "2025-12-25"
+START_TIME = "2026-03-01"
+END_TIME = "2026-03-08"
 # Sentinel-2 tile
 TILE_ID = "34SGH"
 # set max cloud cover
@@ -195,7 +195,7 @@ def main() -> None:
         print(f"Found <{len(s2_scenes_dict)}> Sentinel-2 scene IDs:")
         for _i, s2_id in s2_scenes_dict.items():
             print(f" - {s2_id}")
-    
+
     print("======================================")
     print("Start Download and Processing...")
     print("======================================")

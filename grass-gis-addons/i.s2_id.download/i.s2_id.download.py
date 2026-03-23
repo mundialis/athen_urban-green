@@ -61,15 +61,10 @@ def main() -> None:
     # set copernicus data space as preferred download provider
     dag.set_preferred_provider("cop_dataspace")
 
-    # split ID
-    id_split = s2_id.split("_")
-
-    # define search criterias
-    # S2 product type: L1C or L2A
-    product_type = f"S2_MSI_{id_split[1][3:]}"
-
+    # set search criteria with S2 ID
+    # collection not necessary, but speeds up search
     search_criteria = {
-        "productType": product_type,
+        "collection": "S2_MSI_L2A",
         "id": s2_id,
     }
 

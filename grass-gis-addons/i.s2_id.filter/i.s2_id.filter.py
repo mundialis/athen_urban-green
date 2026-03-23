@@ -182,6 +182,7 @@ def main():
     # write result to stdout
     sys.stdout.write(json.dumps(result))
 
+
 if __name__ == "__main__":
     options, flags = grass.parser()
     main()
