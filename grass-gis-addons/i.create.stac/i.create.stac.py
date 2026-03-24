@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR0914, D100
+# ruff: noqa: PLR0914, D100, COM812
 #
 ############################################################################
 #
@@ -89,6 +89,19 @@ import pystac
 from rio_stac.stac import create_stac_item
 
 
+def add_item_unique(collection: pystac.Collection, item: pystac.Item) -> None:
+    """Add item to collection if it doesn't already exist."""
+    existing_ids = {i.id for i in collection.get_all_items()}
+    if item.id not in existing_ids:
+        collection.add_item(item)
+    else:
+        grass.message(
+            f"STAC item <{item.id}> already exists in collection"
+            f"<{collection.id}>."
+        )
+        grass.message("Not adding duplicate item.")
+
+
 def main() -> None:
     """Create STAC item and add it to catalog."""
     # parse options
@@ -123,7 +136,7 @@ def main() -> None:
     ).replace(tzinfo=datetime.timezone.utc)
 
     # STAC item ID
-    stac_item_id = f"{stac_id_prefix}_{s2_id.split("_")[2]}"
+    stac_item_id = f"{stac_id_prefix}_{s2_id.split('_')[2]}"
 
     # create STAC item
     item = create_stac_item(
@@ -151,7 +164,7 @@ def main() -> None:
         f"Add STAC item <{item.id}> to collection <{collection.id}> "
         f"of <{catalog.id}>...",
     )
-    collection.add_item(item)
+    add_item_unique(collection, item)
 
     # update temporal and spatial extent of collection
     collection.update_extent_from_items()
