@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: D100, PTH118, PTH208
+# ruff: noqa: D100, DTZ011, PLR0914
 #
 ############################################################################
 # MODULE:      i.s2_id.filter
@@ -100,15 +100,16 @@
 # % requires: -t,stac_collection
 # %end
 
-import sys
-import json
 import datetime
+import json
+import sys
+
 import grass.script as grass
-from eodag import EODataAccessGateway
 import pystac
+from eodag import EODataAccessGateway
 
 
-def main():
+def main() -> None:
     """Filter S2 scenes."""
     # Get options
     start = options["start_time"]
@@ -126,7 +127,10 @@ def main():
     # get bbox from region (must have been set before)
     if a:
         bbox_ll = grass.parse_command(
-            "g.region", format="json", flags="b", quiet=True
+            "g.region",
+            format="json",
+            flags="b",
+            quiet=True,
         )
         lonmin = bbox_ll["ll_w"]
         lonmax = bbox_ll["ll_e"]
@@ -178,7 +182,7 @@ def main():
     ]
 
     # format result
-    result = {f"S2_ID_{i+1}": id_value for i, id_value in enumerate(s2_ids)}
+    result = {f"S2_ID_{i + 1}": id_value for i, id_value in enumerate(s2_ids)}
     # write result to stdout
     sys.stdout.write(json.dumps(result))
 
