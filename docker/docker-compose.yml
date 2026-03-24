@@ -5,11 +5,12 @@ services:
     build:
       context: ..
       dockerfile: docker/Dockerfile
-    volumes:
+    #volumes:
       # uncomment to mount grass-gis-addons etc while developing:
-      - ../processing/scripts:/src/processing/scripts
+      # - ../processing/scripts:/src/processing/scripts
       # - ../processing/input:/src/input
       # - ../grass-gis-addons:/src/grass-gis-addons
+      
     environment:
       ACTINIA_USER: ${ACTINIA_USER}
       ACTINIA_PW: ${ACTINIA_PW}

@@ -10,6 +10,9 @@ RUN pip install --no-cache-dir -r /src/requirements.txt
 COPY docker/grass_addons_list.csv /src/grass_addons_list.csv
 COPY grass-gis-addons /src/grass-gis-addons
 
+# copy needes processing scripts
+COPY processing/scripts /src/processing/scripts
+    
 RUN while IFS=, read -r ADDON SERVER; \
 do \
 if [[ $ADDON != "#*" ]]; \
