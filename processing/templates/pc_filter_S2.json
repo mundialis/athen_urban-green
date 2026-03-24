@@ -50,6 +50,10 @@
         {
           "param": "latmax",
           "value": "_"
+        },
+        {
+          "param": "stac_collection",
+          "value": "_"
         }
       ],
       "flags": "a"

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: D100, PTH118, PTH208
+# ruff: noqa: D100, DTZ011, PLR0914
 #
 ############################################################################
 # MODULE:      i.s2_id.filter
@@ -78,22 +78,38 @@
 # % type: string
 # %end
 
+# %option
+# % key: stac_collection
+# % description: URL to STAC collection for retrieving start time
+# % required: no
+# % type: string
+# %end
+
 # %flag
 # % key: a
 # % description: Use current region as AOI for filtering S2 scenes
 # %end
 
-# %rules
-# % collective: lonmin,lonmax,latmin,latmax
+# %flag
+# % key: t
+# % description: Retrieve start time from last entry in STAC collection
 # %end
 
-import sys
+# %rules
+# % collective: lonmin,lonmax,latmin,latmax
+# % requires: -t,stac_collection
+# %end
+
+import datetime
 import json
+import sys
+
 import grass.script as grass
+import pystac
 from eodag import EODataAccessGateway
 
 
-def main():
+def main() -> None:
     """Filter S2 scenes."""
     # Get options
     start = options["start_time"]
@@ -104,21 +120,41 @@ def main():
     lonmax = options["lonmax"]
     latmin = options["latmin"]
     latmax = options["latmax"]
+    stac_collection = options["stac_collection"]
     a = flags["a"]
+    t = flags["t"]
 
     # get bbox from region (must have been set before)
     if a:
         bbox_ll = grass.parse_command(
-            "g.region", format="json", flags="b", quiet=True
+            "g.region",
+            format="json",
+            flags="b",
+            quiet=True,
         )
         lonmin = bbox_ll["ll_w"]
         lonmax = bbox_ll["ll_e"]
         latmin = bbox_ll["ll_s"]
         latmax = bbox_ll["ll_n"]
 
+    if t:
+        # get end date of temporal extent of STAC collection
+        collection = pystac.Collection.from_file(stac_collection)
+        temp_extent = collection.extent.temporal.intervals
+        end_stac_extent = temp_extent[0][1]
+        # check if end time is None
+        if end_stac_extent is None:
+            # stop processing
+            grass.fatal("No end time found in STAC collection")
+
+        # overwrite start and end date for filtering range
+        start = end_stac_extent.strftime("%Y-%m-%d")
+        end = datetime.date.today().strftime("%Y-%m-%d")
+
     # define search criteria
     search_criteria = {
-        "productType": "S2MSI2A",
+        "provider": "cop_dataspace",
+        "collection": "S2_MSI_L2A",
         "start": start,
         "end": end,
         "geom": {
@@ -127,12 +163,12 @@ def main():
             "lonmax": float(lonmax),
             "latmax": float(latmax),
         },
-        "cloudCover": cloud_cover,
+        "eo:cloud_cover": cloud_cover,
     }
 
     # add tile ID to search criteria
     if tile_id:
-        search_criteria["tileIdentifier"] = tile_id
+        search_criteria["grid:code"] = f"MGRS-{tile_id}"
 
     # initialize EODataAccessGateway
     dag = EODataAccessGateway()
@@ -146,7 +182,7 @@ def main():
     ]
 
     # format result
-    result = {f"S2_ID_{i+1}": id_value for i, id_value in enumerate(s2_ids)}
+    result = {f"S2_ID_{i + 1}": id_value for i, id_value in enumerate(s2_ids)}
     # write result to stdout
     sys.stdout.write(json.dumps(result))
 

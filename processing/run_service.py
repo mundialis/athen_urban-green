@@ -16,13 +16,18 @@
 import json
 import time
 from pathlib import Path
+
 import requests
 from requests.auth import HTTPBasicAuth
 
 # ### CONFIG ###
-# Filtering parameters
-START_TIME = "2025-12-20"
-END_TIME = "2025-12-25"
+# set True to enable automatic time range (from last entry in STAC Catalog)
+AUTOMATIC_TIME_RANGE = False
+STAC_COLLECTION_URL = "..."  # TODO: Correct Link needs to be added
+# for manual time range definition
+START_TIME = "2026-03-01"
+END_TIME = "2026-03-08"
+# Sentinel-2 tile
 TILE_ID = "34SGH"
 # set max cloud cover
 MAX_CLOUD_COVER = 100
@@ -70,7 +75,8 @@ def print_as_json(data: dict) -> None:
 
 # helper function to verify a request
 def verify_request(
-    request: requests.Response, success_code: int = 200
+    request: requests.Response,
+    success_code: int = 200,
 ) -> None:
     """Verify the request."""
     if request.status_code != success_code:
@@ -87,7 +93,9 @@ def verify_request(
 
 # function to make a POST request
 def post_request(
-    request_url: str, actinia_auth: HTTPBasicAuth, process_chain: dict
+    request_url: str,
+    actinia_auth: HTTPBasicAuth,
+    process_chain: dict,
 ) -> tuple[dict, str]:
     """Make a POST request to the Actinia API."""
     # make the POST request to start the processing
@@ -116,8 +124,7 @@ def get_request(request_url: str, actinia_auth: HTTPBasicAuth) -> dict:
         timeout=20,
     )
     verify_request(request, 200)
-    json_response = request.json()
-    return json_response
+    return request.json()
 
 
 # ### MAIN ###
@@ -132,7 +139,7 @@ def main() -> None:
     print("Filter Sentinel-2 scenes...")
 
     # open process chain for S2 ID filtering
-    with open(MAIN_PC_PATH + S2_ID_PROCESS_CHAIN, encoding="utf-8") as f:
+    with Path(MAIN_PC_PATH + S2_ID_PROCESS_CHAIN).open(encoding="utf-8") as f:
         process_chain = json.load(f)
 
     # insert search parameters into process chain
@@ -145,10 +152,17 @@ def main() -> None:
     # process_chain["list"][1]["inputs"][5]["value"] = str(LONMAX)
     # process_chain["list"][1]["inputs"][6]["value"] = str(LATMIN)
     # process_chain["list"][1]["inputs"][7]["value"] = str(LATMAX)
+    process_chain["list"][1]["inputs"][8]["value"] = str(STAC_COLLECTION_URL)
+
+    # if AUTOMATIC_TIME_RANGE
+    if AUTOMATIC_TIME_RANGE:
+        process_chain["list"][1]["flags"] = "at"
 
     # send POST request for S2 ID filtering
     _json_response, status_request_url = post_request(
-        ACTINIA_ENDPOINT, ACTINIA_AUTH, process_chain
+        ACTINIA_ENDPOINT,
+        ACTINIA_AUTH,
+        process_chain,
     )
 
     # wait for a few seconds (otherwise the status request might fail)
@@ -159,7 +173,8 @@ def main() -> None:
         try:
             # get status response as json
             status_response = get_request(
-                status_request_url.replace("https", "http"), ACTINIA_AUTH
+                status_request_url.replace("https", "http"),
+                ACTINIA_AUTH,
             )
             # extract S2 IDs from status response
             stdout = status_response["process_log"][1]["stdout"]
@@ -182,33 +197,35 @@ def main() -> None:
     if len(s2_scenes_dict) == 0:
         print("No Sentinel-2 scenes found. Quit.")
         return
-    else:
-        print(f"Found <{len(s2_scenes_dict)}> Sentinel-2 scene IDs:")
-        for _i, s2_id in s2_scenes_dict.items():
-            print(f" - {s2_id}")
+    print(f"Found <{len(s2_scenes_dict)}> Sentinel-2 scene IDs:")
+    for s2_id in s2_scenes_dict.values():
+        print(f" - {s2_id}")
 
     print("======================================")
     print("Start Download and Processing...")
     print("======================================")
 
     # load the main process chain
-    with open(MAIN_PC_PATH + MAIN_PROCESS_CHAIN, encoding="utf-8") as f:
+    with Path(MAIN_PC_PATH + MAIN_PROCESS_CHAIN).open(encoding="utf-8") as f:
         process_chain = json.load(f)
 
     # insert Sentinel-2 IDs into the process chain
     process_chain["list"][1]["inputs"][0]["value"] = list(
-        s2_scenes_dict.values()
+        s2_scenes_dict.values(),
     )
 
     # make the POST request to start the processing
     status_response, status_request_url = post_request(
-        ACTINIA_ENDPOINT, ACTINIA_AUTH, process_chain
+        ACTINIA_ENDPOINT,
+        ACTINIA_AUTH,
+        process_chain,
     )
 
     # keep polling the status until finished
     while status_response["status"] in {"accepted", "running"}:
         status_response = get_request(
-            status_request_url.replace("https", "http"), ACTINIA_AUTH
+            status_request_url.replace("https", "http"),
+            ACTINIA_AUTH,
         )
         print(f"Polling status: {status_response['status']}")
         print(f"Doing: {status_response['message']}")
