@@ -75,7 +75,8 @@ def print_as_json(data: dict) -> None:
 
 # helper function to verify a request
 def verify_request(
-    request: requests.Response, success_code: int = 200,
+    request: requests.Response,
+    success_code: int = 200,
 ) -> None:
     """Verify the request."""
     if request.status_code != success_code:
@@ -92,7 +93,9 @@ def verify_request(
 
 # function to make a POST request
 def post_request(
-    request_url: str, actinia_auth: HTTPBasicAuth, process_chain: dict,
+    request_url: str,
+    actinia_auth: HTTPBasicAuth,
+    process_chain: dict,
 ) -> tuple[dict, str]:
     """Make a POST request to the Actinia API."""
     # make the POST request to start the processing
@@ -157,7 +160,9 @@ def main() -> None:
 
     # send POST request for S2 ID filtering
     _json_response, status_request_url = post_request(
-        ACTINIA_ENDPOINT, ACTINIA_AUTH, process_chain,
+        ACTINIA_ENDPOINT,
+        ACTINIA_AUTH,
+        process_chain,
     )
 
     # wait for a few seconds (otherwise the status request might fail)
@@ -168,7 +173,8 @@ def main() -> None:
         try:
             # get status response as json
             status_response = get_request(
-                status_request_url.replace("https", "http"), ACTINIA_AUTH,
+                status_request_url.replace("https", "http"),
+                ACTINIA_AUTH,
             )
             # extract S2 IDs from status response
             stdout = status_response["process_log"][1]["stdout"]
@@ -210,13 +216,16 @@ def main() -> None:
 
     # make the POST request to start the processing
     status_response, status_request_url = post_request(
-        ACTINIA_ENDPOINT, ACTINIA_AUTH, process_chain,
+        ACTINIA_ENDPOINT,
+        ACTINIA_AUTH,
+        process_chain,
     )
 
     # keep polling the status until finished
     while status_response["status"] in {"accepted", "running"}:
         status_response = get_request(
-            status_request_url.replace("https", "http"), ACTINIA_AUTH,
+            status_request_url.replace("https", "http"),
+            ACTINIA_AUTH,
         )
         print(f"Polling status: {status_response['status']}")
         print(f"Doing: {status_response['message']}")
