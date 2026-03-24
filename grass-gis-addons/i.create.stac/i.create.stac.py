@@ -95,8 +95,12 @@ def add_item_unique(collection: pystac.Collection, item: pystac.Item) -> None:
     if item.id not in existing_ids:
         collection.add_item(item)
     else:
-        grass.message(f"STAC item <{item.id}> already exists in collection <{collection.id}>.")
+        grass.message(
+            f"STAC item <{item.id}> already exists in collection"
+            f"<{collection.id}>."
+        )
         grass.message("Not adding duplicate item.")
+
 
 def main() -> None:
     """Create STAC item and add it to catalog."""
@@ -132,7 +136,7 @@ def main() -> None:
     ).replace(tzinfo=datetime.timezone.utc)
 
     # STAC item ID
-    stac_item_id = f"{stac_id_prefix}_{s2_id.split("_")[2]}"
+    stac_item_id = f"{stac_id_prefix}_{s2_id.split('_')[2]}"
 
     # create STAC item
     item = create_stac_item(
