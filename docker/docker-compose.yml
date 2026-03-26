@@ -35,11 +35,3 @@ services:
       --requirepass "$$(cat $$VALKEY_PASS_FILE)"
       '
     ]
-
-  geoserver:
-    image: docker.osgeo.org/geoserver:2.28.0
-    volumes:
-    - ./geoserver_data:/data
-    environment:
-      GEOSERVER_ADMIN_USER: ${GEOSERVER_USER}
-      GEOSERVER_ADMIN_PASSWORD: ${GEOSERVER_PW}
