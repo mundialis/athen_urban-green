@@ -12,4 +12,4 @@ jobs:
   lint:
     uses: mundialis/github-workflows/.github/workflows/linting.yml@exclude_option_for_json_linting
     with:
-      FILTER_REGEX_EXCLUDE: ".*processing/templates/template_MAIN_loop.json"
+      SUPER_LINTER_FILTER_REGEX_EXCLUDE: ".*processing/templates/template_MAIN_loop.json"
