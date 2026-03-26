@@ -10,6 +10,6 @@ on:
 
 jobs:
   lint:
-    uses: mundialis/github-workflows/.github/workflows/linting.yml@exclude_option_for_json_linting
+    uses: mundialis/github-workflows/.github/workflows/linting.yml@main
     with:
       FILTER_REGEX_EXCLUDE: ".*processing/templates/template_MAIN_loop.json"
