@@ -85,6 +85,7 @@ import datetime
 import os
 
 import grass.script as grass
+import pystac
 import requests
 import pystac
 import requests
@@ -156,8 +157,8 @@ def main() -> None:
 
     # post STAC item to pysw
     # url: "http://localhost:8000/stac/collections/urban_green_monitoring/"
-    collection_url = os.path.join(stac_catalog, "collections", stac_collection)
-    items_url = os.path.join(collection_url, "items")
+    collection_url = Path(stac_catalog) / "collections" / stac_collection
+    items_url = Path(collection_url) / "items"
     headers = {"Content-Type": "application/json"}
     try:
         response = requests.post(
