@@ -85,6 +85,7 @@ import datetime
 import os
 
 import grass.script as grass
+import requests
 import pystac
 import requests
 from rio_stac.stac import create_stac_item
