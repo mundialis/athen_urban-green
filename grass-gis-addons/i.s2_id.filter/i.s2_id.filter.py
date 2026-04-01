@@ -148,7 +148,8 @@ def main() -> None:
             grass.fatal("No end time found in STAC collection")
 
         # overwrite start and end date for filtering range
-        start = end_stac_extent.strftime("%Y-%m-%d")
+        start_tmp = end_stac_extent + datetime.timedelta(days=1)
+        start = start_tmp.strftime("%Y-%m-%d")
         end = datetime.date.today().strftime("%Y-%m-%d")
 
     # define search criteria

@@ -169,7 +169,11 @@ def main() -> None:
     collection_json = requests.get(collection_url).json()
 
     # fetch all items of collection
-    items_json = requests.get(f"{collection_url}/items").json()
+    try:
+        items_json = requests.get(f"{collection_url}/items").json()
+    except requests.exceptions.RequestException as e:
+        grass.fatal(f"Error occurred while fetching items: {e}")
+
     items_fetched = []
     for feat in items_json["features"]:
         items_fetched.append(pystac.Item.from_dict(feat))
