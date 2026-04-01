@@ -82,12 +82,11 @@
 # %end
 
 import datetime
-import json
-import os
+from pathlib import Path
 
 import grass.script as grass
-import requests
 import pystac
+import requests
 from rio_stac.stac import create_stac_item
 
 
@@ -156,21 +155,25 @@ def main() -> None:
 
     # post STAC item to pysw
     # url: "http://localhost:8000/stac/collections/urban_green_monitoring/"
-    collection_url = os.path.join(stac_catalog, "collections", stac_collection)
-    items_url = os.path.join(collection_url, "items")
+    collection_url = Path(stac_catalog) / "collections" / stac_collection
+    items_url = Path(collection_url) / "items"
     headers = {"Content-Type": "application/json"}
     try:
-        response = requests.post(items_url, headers=headers, json=item.to_dict())
+        response = requests.post(
+            items_url, headers=headers, json=item.to_dict(), timeout=100
+        )
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        grass.fatal(f"Error occurred while posting STAC item: {e}")            
+        grass.fatal(f"Error occurred while posting STAC item: {e}")
 
     # fetch collection
-    collection_json = requests.get(collection_url).json()
+    collection_json = requests.get(collection_url, timeout=100).json()
 
     # fetch all items of collection
     try:
-        items_json = requests.get(f"{collection_url}/items").json()
+        items_json = requests.get(
+            f"{collection_url}/items", timeout=100
+        ).json()
     except requests.exceptions.RequestException as e:
         grass.fatal(f"Error occurred while fetching items: {e}")
 
@@ -193,10 +196,11 @@ def main() -> None:
             collection_url,
             json=collection_json,
             headers={"Content-Type": "application/json"},
+            timeout=100,
         )
     except requests.exceptions.RequestException as e:
         grass.fatal(f"Error occurred while updating collection: {e}")
-        
+
 
 if __name__ == "__main__":
     options, flags = grass.parser()
