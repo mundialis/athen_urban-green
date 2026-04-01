@@ -83,8 +83,10 @@
 
 import datetime
 import json
+import os
 
 import grass.script as grass
+import requests
 import pystac
 from rio_stac.stac import create_stac_item
 
@@ -152,27 +154,45 @@ def main() -> None:
         },
     )
 
-    # print STAC item as json
-    grass.message(json.dumps(item.to_dict(), indent=2))
+    # post STAC item to pysw
+    # url: "http://localhost:8000/stac/collections/urban_green_monitoring/"
+    collection_url = os.path.join(stac_catalog, "collections", stac_collection)
+    items_url = os.path.join(collection_url, "items")
+    headers = {"Content-Type": "application/json"}
+    try:
+        response = requests.post(items_url, headers=headers, json=item.to_dict())
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        grass.fatal(f"Error occurred while posting STAC item: {e}")            
 
-    # load STAC catalog and collection
-    catalog = pystac.Catalog.from_file(f"{stac_catalog}/catalog.json")
-    collection = catalog.get_child(stac_collection)
+    # fetch collection
+    collection_json = requests.get(collection_url).json()
 
-    # add item to collection
-    grass.message(
-        f"Add STAC item <{item.id}> to collection <{collection.id}> "
-        f"of <{catalog.id}>...",
-    )
-    add_item_unique(collection, item)
+    # fetch all items of collection
+    items_json = requests.get(f"{collection_url}/items").json()
+    items_fetched = []
+    for feat in items_json["features"]:
+        items_fetched.append(pystac.Item.from_dict(feat))
 
-    # update temporal and spatial extent of collection
-    collection.update_extent_from_items()
+    # check if any items were fetched
+    if not items_fetched:
+        raise ValueError(f"No items found for collection <{stac_collection}>")
 
-    # write out catalog
-    catalog.normalize_hrefs(stac_catalog)
-    catalog.save(catalog_type=pystac.CatalogType.SELF_CONTAINED)
+    # recompute spatial and temporal extent from items
+    new_extent = pystac.Extent.from_items(items_fetched).to_dict()
+    # update collection json with new extent
+    collection_json["extent"] = new_extent
 
+    # update collection with new extent
+    try:
+        _update_resp = requests.put(
+            collection_url,
+            json=collection_json,
+            headers={"Content-Type": "application/json"},
+        )
+    except requests.exceptions.RequestException as e:
+        grass.fatal(f"Error occurred while updating collection: {e}")
+        
 
 if __name__ == "__main__":
     options, flags = grass.parser()

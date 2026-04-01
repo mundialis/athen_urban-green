@@ -115,7 +115,7 @@
 				},
 				{
 					"param": "stac_catalog",
-					"value": "/src/data_tmp/stac"
+					"value": "http://pycsw:8000/stac/"
 				},
 				{
 					"param": "stac_collection",
