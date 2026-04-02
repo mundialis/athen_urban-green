@@ -1,6 +1,6 @@
 {
-	"id": "template_MAIN_loop",
-    "description": "MAIN loop template",
+	"id": "template_processing",
+    "description": "processing template",
 	"template": {
         "list": [
 			{
@@ -20,8 +20,8 @@
 		},
 			{% for i in iteration %}
 		{
-			"id": "template_download_import_data_1",
-			"module": "template_download_import_data",
+			"id": "template_S2_download_import_1",
+			"module": "template_S2_download_import",
 			"inputs": [
 				{
 					"param": "S2_ID",

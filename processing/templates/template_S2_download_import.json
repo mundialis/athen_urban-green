@@ -1,5 +1,5 @@
 {
-	"id": "template_download_import_data",
+	"id": "template_S2_download_import",
 	"description": "Downloads and imports S2 scene by ID - Script",
 	"template": {
 		"version": "1",
