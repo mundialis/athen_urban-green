@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR0914, D100, COM812
+# ruff: noqa: PLR0914, D100, COM812, PTH118, TRY003
 #
 ############################################################################
 #
@@ -82,7 +82,7 @@
 # %end
 
 import datetime
-from pathlib import Path
+import os
 
 import grass.script as grass
 import pystac
@@ -155,8 +155,8 @@ def main() -> None:
 
     # post STAC item to pysw
     # url: "http://localhost:8000/stac/collections/urban_green_monitoring/"
-    collection_url = Path(stac_catalog) / "collections" / stac_collection
-    items_url = Path(collection_url) / "items"
+    collection_url = os.path.join(stac_catalog, "collections", stac_collection)
+    items_url = os.path.join(collection_url, "items")
     headers = {"Content-Type": "application/json"}
     try:
         response = requests.post(
@@ -177,9 +177,12 @@ def main() -> None:
     except requests.exceptions.RequestException as e:
         grass.fatal(f"Error occurred while fetching items: {e}")
 
-    items_fetched = []
-    for feat in items_json["features"]:
-        items_fetched.append(pystac.Item.from_dict(feat))
+    # items_fetched = []
+    # for feat in items_json["features"]:
+    #     items_fetched.append(pystac.Item.from_dict(feat))
+    items_fetched = [
+        pystac.Item.from_dict(feat) for feat in items_json["features"]
+    ]
 
     # check if any items were fetched
     if not items_fetched:
@@ -192,7 +195,7 @@ def main() -> None:
 
     # update collection with new extent
     try:
-        _update_resp = requests.put(
+        requests.put(
             collection_url,
             json=collection_json,
             headers={"Content-Type": "application/json"},
