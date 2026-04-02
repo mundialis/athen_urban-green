@@ -1,23 +1,8 @@
 {
-	"id": "template_processing",
-    "description": "processing template",
+	"id": "template_S2_processing",
+    "description": "Main processing template that loops through S2 IDs, downloads and imports the scenes, applies masks, calculates indices, creates STAC items, and cleans up intermediate data.",
 	"template": {
         "list": [
-			{
-			"id": "g.region_1",
-			"module": "g.region",
-			"inputs": [
-				{
-					"param": "vector",
-					"value": "aoi@vector_data"
-				},
-				{
-					"param": "res",
-					"value": "10"
-				}
-			],
-			"flags": "g"
-		},
 			{% for i in iteration %}
 		{
 			"id": "template_S2_download_import_1",
