@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR0915, PLR2004, D100, TRY003
+# ruff: noqa: PLR0915, PLR2004, D100, TRY003, S701
 #
 ############################################################################
 # MODULE:      start_processing
@@ -203,15 +203,13 @@ def main() -> None:
     }
 
     # initialize jinja2 environment
-    jinja2_env = Environment(
-        loader=FileSystemLoader(MAIN_PC_PATH), autoescape=True
-    )
+    jinja2_env = Environment(loader=FileSystemLoader(MAIN_PC_PATH))
 
     process_chain = update_process_chain_variables(
         S2_ID_PROCESS_CHAIN,
         pc_variables_filter,
         jinja2_env,
-        AUTOMATIC_TIME_RANGE,
+        automatic_time_range=AUTOMATIC_TIME_RANGE,
     )
 
     # send POST request for S2 ID filtering
@@ -280,7 +278,7 @@ def main() -> None:
         MAIN_PROCESS_CHAIN,
         pc_variables_processing,
         jinja2_env,
-        AUTOMATIC_TIME_RANGE,
+        automatic_time_range=AUTOMATIC_TIME_RANGE,
     )
 
     # make the POST request to start the processing
