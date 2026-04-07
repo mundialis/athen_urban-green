@@ -1,0 +1,20 @@
+{
+  "list": [
+    {
+      "id": "g.region_1",
+      "module": "g.region",
+      "inputs": [
+        { "param": "vector", "value": "aoi@vector_data" },
+        { "param": "res", "value": "10" }
+      ],
+      "flags": "g"
+    },
+    {
+      "id": "i_s2_id_filter",
+      "module": "i.s2_id.filter",
+      "inputs": {{ inputs | tojson }},
+      "flags": "{{ 'at' if automatic_time_range else 'a' }}"
+    }
+  ],
+  "version": "1"
+}
