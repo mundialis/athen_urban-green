@@ -60,14 +60,14 @@ ACTINIA_ENDPOINT = f"{ACTINIA_URL}/locations/{GRASS_PROJECT}/processing_export"
 ENV_PATH = "docker/.env"
 
 # STAC catalog variables
-stac_catalog_url = "http://pycsw:8000/stac/"
-stac_collection = "urban_green_monitoring"
+STAC_CATALOG_URL = "http://pycsw:8000/stac/"
+STAC_COLLECTION = "urban_green_monitoring"
 
 # STAC item metadata
-asset_names = "NDVI,NDVI_classified,NDWI,NDWI_classified"
-stac_item_id_prefix = "athen_urban_green"
-stac_item_title = "Urban Green Monitoring Athens"
-stac_item_description = (
+ASSET_NAMES = "NDVI,NDVI_classified,NDWI,NDWI_classified"
+STAC_ITEM_ID_PREFIX = "athen_urban_green"
+STAC_ITEM_TITLE = "Urban Green Monitoring Athens"
+STAC_ITEM_DESCRIPTION = (
     "NDVI + NDWI raster maps based on Sentinel-2 of Athen for urban green "
     "spaces monitoring."
 )
@@ -167,19 +167,17 @@ def update_process_chain_variables(
 
 # ### MAIN ###
 def main() -> None:
+    """Sentinel-2 scene processing."""
+
     # check if .env exists
     if not Path(ENV_PATH).is_file():
-        raise FileNotFoundError(
-            "ERROR: .env file not found! Please create a .env file with "
-            "your actinia credentials."
-        )
+        raise FileNotFoundError("ERROR: .env file not found. Quitting.")
     # load actinia credentials from .env file
     load_dotenv(dotenv_path=ENV_PATH)
     actinia_user = os.getenv("ACTINIA_USER")
     actinia_password = os.getenv("ACTINIA_PW")
     actinia_auth = HTTPBasicAuth(actinia_user, actinia_password)
 
-    """Start Sentinel-2 processing."""
     print("======================================")
     print("Start Sentinel-2 processing for Athens...")
     print("Using actinia at:")
@@ -204,7 +202,9 @@ def main() -> None:
     }
 
     # initialize jinja2 environment
-    jinja2_env = Environment(loader=FileSystemLoader(MAIN_PC_PATH))
+    jinja2_env = Environment(
+        loader=FileSystemLoader(MAIN_PC_PATH), autoescape=False
+    )
 
     process_chain = update_process_chain_variables(
         S2_ID_PROCESS_CHAIN,
@@ -267,12 +267,12 @@ def main() -> None:
 
     pc_variables_processing = {
         "iteration": list(s2_scenes_dict.values()),
-        "asset_names": asset_names,
-        "stac_item_id_prefix": stac_item_id_prefix,
-        "stac_item_title": stac_item_title,
-        "stac_item_description": stac_item_description,
-        "stac_catalog_url": stac_catalog_url,
-        "stac_collection": stac_collection,
+        "asset_names": ASSET_NAMES,
+        "stac_item_id_prefix": STAC_ITEM_ID_PREFIX,
+        "stac_item_title": STAC_ITEM_TITLE,
+        "stac_item_description": STAC_ITEM_DESCRIPTION,
+        "stac_catalog_url": STAC_CATALOG_URL,
+        "stac_collection": STAC_COLLECTION,
     }
 
     process_chain = update_process_chain_variables(
@@ -306,12 +306,6 @@ def main() -> None:
     for s2_id in list(s2_scenes_dict.values()):
         print(f" - {s2_id}")
     print("======================================")
-
-    # # print output URLs
-    # # Probably not necessary for final script
-    # # Useful for dev status
-    # for tif in status_response["urls"]["resources"]:
-    #     print(f"{Path(tif).name}: {tif.replace('https', 'http')}")
 
 
 if __name__ == "__main__":
