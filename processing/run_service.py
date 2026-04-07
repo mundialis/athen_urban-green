@@ -13,14 +13,14 @@
 #
 ############################################################################
 
-import os
 import json
+import os
 import time
 from pathlib import Path
-from dotenv import load_dotenv
 
-from jinja2 import Environment, FileSystemLoader
 import requests
+from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
 from requests.auth import HTTPBasicAuth
 
 # ### CONFIG ###
@@ -152,24 +152,20 @@ def update_process_chain_variables(
     *,
     automatic_time_range: bool = False,
 ) -> dict:
-    """
-    Update process chain variables for processing using jinja2 templates.
-    """
-
+    """Update process chain variables for processing using jinja2 templates."""
     # load the process chain template
     template = jinja2_env.get_template(path_to_template)
     # render process chain template using jinja2
     rendered_pc = template.render(
-        automatic_time_range=automatic_time_range, **pc_variables
+        automatic_time_range=automatic_time_range,
+        **pc_variables,
     )
-    process_chain = json.loads(rendered_pc)
-    return process_chain
+    return json.loads(rendered_pc)
 
 
 # ### MAIN ###
 def main() -> None:
     """Sentinel-2 scene processing."""
-
     # check if .env exists
     if not Path(ENV_PATH).is_file():
         raise FileNotFoundError("ERROR: .env file not found. Quitting.")
