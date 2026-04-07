@@ -149,7 +149,8 @@ def update_process_chain_variables(
     path_to_template: str,
     pc_variables: dict,
     jinja2_env: Environment,
-    automatic_time_range: bool,) -> dict:
+    automatic_time_range: bool,
+) -> dict:
     """
     Update process chain variables for processing using jinja2 templates.
     """
