@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR0915, PLR2004, D100
+# ruff: noqa: PLR0915, PLR2004, D100, TRY003
 #
 ############################################################################
 # MODULE:      start_processing
@@ -203,7 +203,7 @@ def main() -> None:
 
     # initialize jinja2 environment
     jinja2_env = Environment(
-        loader=FileSystemLoader(MAIN_PC_PATH), autoescape=False
+        loader=FileSystemLoader(MAIN_PC_PATH), autoescape=True
     )
 
     process_chain = update_process_chain_variables(
