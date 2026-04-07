@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR0915, PLR2004, D100
+# ruff: noqa: PLR0915, PLR2004, D100, TRY003, S701
 #
 ############################################################################
 # MODULE:      start_processing
@@ -14,10 +14,13 @@
 ############################################################################
 
 import json
+import os
 import time
 from pathlib import Path
 
 import requests
+from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
 from requests.auth import HTTPBasicAuth
 
 # ### CONFIG ###
@@ -43,18 +46,31 @@ MAX_CLOUD_COVER = 100
 # LATMAX = 38.11
 
 # process chain paths
-MAIN_PC_PATH = "templates/"
-S2_ID_PROCESS_CHAIN = "pc_filter_S2.json"
-MAIN_PROCESS_CHAIN = "pc_loop_ids.json"
+MAIN_PC_PATH = "processing/templates/"
+S2_ID_PROCESS_CHAIN = "process_chain_filter_S2_scenes.json.j2"
+MAIN_PROCESS_CHAIN = "process_chain_S2_processing.json.j2"
 
 # variables to set the actinia host, version, and user
 GRASS_PROJECT = "athen_urban-green_epsg32634"
 ACTINIA_BASEURL = "http://localhost:8088"
 ACTINIA_VERSION = "v3"
 ACTINIA_URL = ACTINIA_BASEURL + "/api/" + ACTINIA_VERSION
-# TODO: Get credentials from .env
-ACTINIA_AUTH = HTTPBasicAuth("actinia", "actinia")
 ACTINIA_ENDPOINT = f"{ACTINIA_URL}/locations/{GRASS_PROJECT}/processing_export"
+# path to .env file
+ENV_PATH = "docker/.env"
+
+# STAC catalog variables
+STAC_CATALOG_URL = "http://pycsw:8000/stac/"
+STAC_COLLECTION = "urban_green_monitoring"
+
+# STAC item metadata
+ASSET_NAMES = "NDVI,NDVI_classified,NDWI,NDWI_classified"
+STAC_ITEM_ID_PREFIX = "athen_urban_green"
+STAC_ITEM_TITLE = "Urban Green Monitoring Athens"
+STAC_ITEM_DESCRIPTION = (
+    "NDVI + NDWI raster maps based on Sentinel-2 of Athen for urban green "
+    "spaces monitoring."
+)
 
 
 # ### FUNCTIONS ###
@@ -76,6 +92,7 @@ def print_as_json(data: dict) -> None:
 # helper function to verify a request
 def verify_request(
     request: requests.Response,
+    actinia_auth: HTTPBasicAuth,
     success_code: int = 200,
 ) -> None:
     """Verify the request."""
@@ -87,7 +104,7 @@ def verify_request(
         print("See errors below:")
         print_as_json(request.json())
         request_url = request.json()["urls"]["status"]
-        requests.delete(url=request_url, auth=ACTINIA_AUTH, timeout=20)
+        requests.delete(url=request_url, auth=actinia_auth, timeout=20)
         raise HasBeenTerminatedError(request_url)
 
 
@@ -106,7 +123,7 @@ def post_request(
         timeout=20,
     )
     # check if anything went wrong
-    verify_request(request, 200)
+    verify_request(request, actinia_auth, 200)
     # get a json-encoded content of the response
     json_response = request.json()
     # get status request URL
@@ -123,13 +140,41 @@ def get_request(request_url: str, actinia_auth: HTTPBasicAuth) -> dict:
         auth=actinia_auth,
         timeout=20,
     )
-    verify_request(request, 200)
+    verify_request(request, actinia_auth, 200)
     return request.json()
+
+
+# function to update process chain variables using jinja2 templates
+def update_process_chain_variables(
+    path_to_template: str,
+    pc_variables: dict,
+    jinja2_env: Environment,
+    *,
+    automatic_time_range: bool = False,
+) -> dict:
+    """Update process chain variables for processing using jinja2 templates."""
+    # load the process chain template
+    template = jinja2_env.get_template(path_to_template)
+    # render process chain template using jinja2
+    rendered_pc = template.render(
+        automatic_time_range=automatic_time_range,
+        **pc_variables,
+    )
+    return json.loads(rendered_pc)
 
 
 # ### MAIN ###
 def main() -> None:
-    """Start Sentinel-2 processing."""
+    """Sentinel-2 scene processing."""
+    # check if .env exists
+    if not Path(ENV_PATH).is_file():
+        raise FileNotFoundError("ERROR: .env file not found. Quitting.")
+    # load actinia credentials from .env file
+    load_dotenv(dotenv_path=ENV_PATH)
+    actinia_user = os.getenv("ACTINIA_USER")
+    actinia_password = os.getenv("ACTINIA_PW")
+    actinia_auth = HTTPBasicAuth(actinia_user, actinia_password)
+
     print("======================================")
     print("Start Sentinel-2 processing for Athens...")
     print("Using actinia at:")
@@ -138,43 +183,50 @@ def main() -> None:
     print("======================================")
     print("Filter Sentinel-2 scenes...")
 
-    # open process chain for S2 ID filtering
-    with Path(MAIN_PC_PATH + S2_ID_PROCESS_CHAIN).open(encoding="utf-8") as f:
-        process_chain = json.load(f)
+    # fill process chain variables for S2 ID filtering
+    pc_variables_filter = {
+        "inputs": [
+            {"param": "start_time", "value": START_TIME},
+            {"param": "end_time", "value": END_TIME},
+            {"param": "tile_id", "value": TILE_ID},
+            {"param": "cloud_cover", "value": str(MAX_CLOUD_COVER)},
+            # {"param": "lonmin", "value": str(LONMIN)},
+            # {"param": "lonmax", "value": str(LONMAX)},
+            # {"param": "latmin", "value": str(LATMIN)},
+            # {"param": "latmax", "value": str(LATMAX)},
+            {"param": "stac_collection", "value": str(STAC_COLLECTION_URL)},
+        ],
+    }
 
-    # insert search parameters into process chain
-    # variables need to be strings for actinia process chain!!!
-    process_chain["list"][1]["inputs"][0]["value"] = START_TIME
-    process_chain["list"][1]["inputs"][1]["value"] = END_TIME
-    process_chain["list"][1]["inputs"][2]["value"] = TILE_ID
-    process_chain["list"][1]["inputs"][3]["value"] = str(MAX_CLOUD_COVER)
-    # process_chain["list"][1]["inputs"][4]["value"] = str(LONMIN)
-    # process_chain["list"][1]["inputs"][5]["value"] = str(LONMAX)
-    # process_chain["list"][1]["inputs"][6]["value"] = str(LATMIN)
-    # process_chain["list"][1]["inputs"][7]["value"] = str(LATMAX)
-    process_chain["list"][1]["inputs"][8]["value"] = str(STAC_COLLECTION_URL)
+    # initialize jinja2 environment
+    jinja2_env = Environment(loader=FileSystemLoader(MAIN_PC_PATH))
 
-    # if AUTOMATIC_TIME_RANGE
-    if AUTOMATIC_TIME_RANGE:
-        process_chain["list"][1]["flags"] = "at"
+    process_chain = update_process_chain_variables(
+        S2_ID_PROCESS_CHAIN,
+        pc_variables_filter,
+        jinja2_env,
+        automatic_time_range=AUTOMATIC_TIME_RANGE,
+    )
 
     # send POST request for S2 ID filtering
     _json_response, status_request_url = post_request(
         ACTINIA_ENDPOINT,
-        ACTINIA_AUTH,
+        actinia_auth,
         process_chain,
     )
 
     # wait for a few seconds (otherwise the status request might fail)
     time.sleep(5)
 
+    # implement retry mechanism for status request
+    # sometimes it fails with error
     retries = 0
     while retries < 5:
         try:
             # get status response as json
             status_response = get_request(
                 status_request_url.replace("https", "http"),
-                ACTINIA_AUTH,
+                actinia_auth,
             )
             # extract S2 IDs from status response
             stdout = status_response["process_log"][1]["stdout"]
@@ -193,10 +245,13 @@ def main() -> None:
             time.sleep(10)
             continue
 
+    # get S2 IDs as dict from actinia response
     s2_scenes_dict = json.loads(stdout)
+    # if no S2 IDs found, quit
     if len(s2_scenes_dict) == 0:
         print("No Sentinel-2 scenes found. Quit.")
         return
+    # print found S2 IDs
     print(f"Found <{len(s2_scenes_dict)}> Sentinel-2 scene IDs:")
     for s2_id in s2_scenes_dict.values():
         print(f" - {s2_id}")
@@ -205,19 +260,27 @@ def main() -> None:
     print("Start Download and Processing...")
     print("======================================")
 
-    # load the main process chain
-    with Path(MAIN_PC_PATH + MAIN_PROCESS_CHAIN).open(encoding="utf-8") as f:
-        process_chain = json.load(f)
+    pc_variables_processing = {
+        "iteration": list(s2_scenes_dict.values()),
+        "asset_names": ASSET_NAMES,
+        "stac_item_id_prefix": STAC_ITEM_ID_PREFIX,
+        "stac_item_title": STAC_ITEM_TITLE,
+        "stac_item_description": STAC_ITEM_DESCRIPTION,
+        "stac_catalog_url": STAC_CATALOG_URL,
+        "stac_collection": STAC_COLLECTION,
+    }
 
-    # insert Sentinel-2 IDs into the process chain
-    process_chain["list"][1]["inputs"][0]["value"] = list(
-        s2_scenes_dict.values(),
+    process_chain = update_process_chain_variables(
+        MAIN_PROCESS_CHAIN,
+        pc_variables_processing,
+        jinja2_env,
+        automatic_time_range=AUTOMATIC_TIME_RANGE,
     )
 
     # make the POST request to start the processing
     status_response, status_request_url = post_request(
         ACTINIA_ENDPOINT,
-        ACTINIA_AUTH,
+        actinia_auth,
         process_chain,
     )
 
@@ -225,7 +288,7 @@ def main() -> None:
     while status_response["status"] in {"accepted", "running"}:
         status_response = get_request(
             status_request_url.replace("https", "http"),
-            ACTINIA_AUTH,
+            actinia_auth,
         )
         print(f"Polling status: {status_response['status']}")
         print(f"Doing: {status_response['message']}")
@@ -238,12 +301,6 @@ def main() -> None:
     for s2_id in list(s2_scenes_dict.values()):
         print(f" - {s2_id}")
     print("======================================")
-
-    # print output URLs
-    # Probably not necessary for final script
-    # Useful for dev status
-    for tif in status_response["urls"]["resources"]:
-        print(f"{Path(tif).name}: {tif.replace('https', 'http')}")
 
 
 if __name__ == "__main__":
