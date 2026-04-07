@@ -1,12 +1,12 @@
 {
-	"id": "template_MAIN_loop",
-    "description": "MAIN loop template",
+	"id": "template_S2_processing",
+    "description": "Main processing template that loops through S2 IDs, downloads and imports the scenes, applies masks, calculates indices, creates STAC items, and cleans up intermediate data.",
 	"template": {
         "list": [
 			{% for i in iteration %}
 		{
-			"id": "template_download_import_data_1",
-			"module": "template_download_import_data",
+			"id": "template_S2_download_import_1",
+			"module": "template_S2_download_import",
 			"inputs": [
 				{
 					"param": "S2_ID",
@@ -95,7 +95,7 @@
 				},
 				{
 					"param": "asset_names",
-					"value": "NDVI,NDVI_classified,NDWI,NDWI_classified"
+					"value": "{{ asset_names }}"
 				},
 				{
 					"param": "s2_id",
@@ -103,23 +103,23 @@
 				},
 				{
 					"param": "stac_id_prefix",
-					"value": "athen_urban_green"
+					"value": "{{ stac_item_id_prefix }}"
 				},
 				{
 					"param": "stac_title",
-					"value": "Urban Green Spaces Athen"
+					"value": "{{ stac_item_title }}"
 				},
 				{
 					"param": "stac_description",
-					"value": "NDVI + NDWI raster maps based on Sentinel-2 of Athen for urban green spaces monitoring."
+					"value": "{{ stac_item_description }}"
 				},
 				{
 					"param": "stac_catalog",
-					"value": "http://pycsw:8000/stac/"
+					"value": "{{ stac_catalog_url }}"
 				},
 				{
 					"param": "stac_collection",
-					"value": "urban_green_monitoring"
+					"value": "{{ stac_collection }}"
 				}
 			]
 		},

@@ -1,9 +1,24 @@
 {
-	"id": "template_download_import_data",
-	"description": "Downloads and imports S2 scene by ID - Script",
+	"id": "template_S2_download_import",
+	"description": "Downloads and imports S2 scene using scene ID.",
 	"template": {
 		"version": "1",
 		"list": [
+			{
+			"id": "g.region_1",
+			"module": "g.region",
+			"inputs": [
+				{
+					"param": "vector",
+					"value": "aoi@vector_data"
+				},
+				{
+					"param": "res",
+					"value": "10"
+				}
+			],
+			"flags": "g"
+			},
 			{
 				"module": "i.s2_id.download",
 				"id": "i.s2_id.download_1",

@@ -1,0 +1,39 @@
+{
+    "list": [        
+        {
+            "id": "template_S2_processing_1",
+            "module": "template_S2_processing",
+            "inputs": [
+                {
+                    "param": "iteration",
+                    "value": "_"
+                },
+                {
+                    "param": "asset_names",
+                    "value": "NDVI,NDVI_classified,NDWI,NDWI_classified"
+                },
+                {
+                    "param": "stac_item_id_prefix",
+                    "value": "athen_urban_green"
+                },
+                {
+                    "param": "stac_item_title",
+                    "value": "Urban Green Monitoring Athens"
+                },
+                {
+                    "param": "stac_item_description",
+                    "value": "NDVI + NDWI raster maps based on Sentinel-2 of Athen for urban green spaces monitoring."
+                },
+                {
+                    "param": "stac_catalog_url",
+                    "value": "http://pycsw:8000/stac/"
+                },
+                {
+                    "param": "stac_collection",
+                    "value": "urban_green_monitoring"
+                }
+            ]
+        }
+],
+    "version": "1"
+}
