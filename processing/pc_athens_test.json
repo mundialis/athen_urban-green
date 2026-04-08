@@ -1,10 +1,4 @@
 {
-	"list": [
-		{
-			"module": "g.mapset",
-			"id": "g_mapset",
-			"flags": "l"
-		}
-	],
-	"version": "1"
+    "list": [{"module": "g.mapset", "id": "g_mapset", "flags": "l"}],
+    "version": "1",
 }
