@@ -187,7 +187,10 @@ def main() -> None:
         {"s2_id": s2_id, "date": date.strftime("%Y-%m-%d"), "year": year}
         for s2_id in s2_ids
         for date in [
-            datetime.datetime.strptime(s2_id.split("_")[2], "%Y%m%dT%H%M%S")
+            datetime.datetime.strptime(
+                s2_id.split("_")[2],
+                "%Y%m%dT%H%M%S",
+            ).replace(tzinfo=datetime.timezone.utc),
         ]
         for year in [date.year]
     ]
