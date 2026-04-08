@@ -183,7 +183,19 @@ def main() -> None:
     ]
 
     # format result
-    result = {f"S2_ID_{i + 1}": id_value for i, id_value in enumerate(s2_ids)}
+    result = [
+        {"s2_id": s2_id, "date": date.strftime("%Y-%m-%d"), "year": year}
+        for s2_id in s2_ids
+        for date in [
+            datetime.datetime.strptime(
+                s2_id.split("_")[2],
+                "%Y%m%dT%H%M%S",
+            ).replace(tzinfo=datetime.timezone.utc),
+        ]
+        for year in [date.year]
+    ]
+
+    # add year
     # write result to stdout
     sys.stdout.write(json.dumps(result))
 

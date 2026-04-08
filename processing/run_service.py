@@ -229,7 +229,7 @@ def main() -> None:
                 actinia_auth,
             )
             # extract S2 IDs from status response
-            stdout = status_response["process_log"][1]["stdout"]
+            process_results = status_response["process_results"]["s2_ids"][0]
             break
         except (
             requests.exceptions.RequestException,
@@ -246,22 +246,23 @@ def main() -> None:
             continue
 
     # get S2 IDs as dict from actinia response
-    s2_scenes_dict = json.loads(stdout)
+    process_results_json = json.loads(process_results)
     # if no S2 IDs found, quit
-    if len(s2_scenes_dict) == 0:
+    if len(process_results_json) == 0:
         print("No Sentinel-2 scenes found. Quit.")
         return
     # print found S2 IDs
-    print(f"Found <{len(s2_scenes_dict)}> Sentinel-2 scene IDs:")
-    for s2_id in s2_scenes_dict.values():
-        print(f" - {s2_id}")
+    print(f"Found <{len(process_results_json)}> Sentinel-2 scene IDs:")
+    for result in process_results_json:
+        print(f" - {result['s2_id']}")
 
     print("======================================")
     print("Start Download and Processing...")
     print("======================================")
 
     pc_variables_processing = {
-        "iteration": list(s2_scenes_dict.values()),
+        "iteration": process_results_json,
+        "tile_id": TILE_ID,
         "asset_names": ASSET_NAMES,
         "stac_item_id_prefix": STAC_ITEM_ID_PREFIX,
         "stac_item_title": STAC_ITEM_TITLE,
@@ -298,8 +299,8 @@ def main() -> None:
 
     print(f"Final status: {status_response['status']}")
     print("Processing finished for:")
-    for s2_id in list(s2_scenes_dict.values()):
-        print(f" - {s2_id}")
+    for result in process_results_json:
+        print(f" - {result['s2_id']}")
     print("======================================")
 
 
