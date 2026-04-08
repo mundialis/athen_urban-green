@@ -153,7 +153,7 @@ def main() -> None:
         },
     )
 
-    # post STAC item to pysw
+    # post STAC item to pycsw
     # url: "http://localhost:8000/stac/collections/urban_green_monitoring/"
     collection_url = os.path.join(stac_catalog, "collections", stac_collection)
     items_url = os.path.join(collection_url, "items")

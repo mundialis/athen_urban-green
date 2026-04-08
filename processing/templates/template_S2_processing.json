@@ -14,14 +14,14 @@
 				},
 				{
 					"param": "download_dir",
-					"value": "/home/data/s2"
+					"value": "/src/download_dir/s2"
 				}
 			]
 		},
 		{
 			"id": "python_1",
 			"exe": "python",
-			"params": ["/src/processing/scripts/remove_data.py", "/home/data"]
+			"params": ["/src/processing/scripts/remove_data.py", "/src/download_dir"]
 		},
 		{
 			"id": "python_2",
@@ -42,6 +42,11 @@
 			"flags": "i"
 		},
 		{
+			"id": "python_3",
+			"exe": "python",
+			"params": ["/src/processing/scripts/create_export_subfolders.py", "/src/export_dir/{{ i.year }}/{{ tile_id }}"]
+		},
+		{
 			"id": "template_calc_NDVI_1",
 			"module": "template_calc_NDVI",
 			"inputs": [
@@ -59,7 +64,7 @@
 				},
 				{
 					"param": "export_dir",
-					"value": "/src/data_tmp/{{ i.year }}/{{ tile_id }}"
+					"value": "/src/export_dir/{{ i.year }}/{{ tile_id }}"
 				}
 			]
 		},
@@ -81,7 +86,7 @@
 				},
 				{
 					"param": "export_dir",
-					"value": "/src/data_tmp/{{ i.year }}/{{ tile_id }}"
+					"value": "/src/export_dir/{{ i.year }}/{{ tile_id }}"
 				}
 			]
 		},
@@ -91,7 +96,7 @@
 			"inputs": [
 				{
 					"param": "asset_paths",
-					"value": "/src/data_tmp/{{ i.year }}/{{ tile_id }}/ndvi_{{ i.s2_id }}.tif,/src/data_tmp/{{ i.year }}/{{ tile_id }}/ndvi_{{ i.s2_id }}_categorized.tif,/src/data_tmp/{{ i.year }}/{{ tile_id }}/ndwi_{{ i.s2_id }}.tif,/src/data_tmp/{{ i.year }}/{{ tile_id }}/ndwi_{{ i.s2_id }}_categorized.tif"
+					"value": "/src/export_dir/{{ i.year }}/{{ tile_id }}/ndvi_{{ i.s2_id }}.tif,/src/export_dir/{{ i.year }}/{{ tile_id }}/ndvi_{{ i.s2_id }}_categorized.tif,/src/export_dir/{{ i.year }}/{{ tile_id }}/ndwi_{{ i.s2_id }}.tif,/src/export_dir/{{ i.year }}/{{ tile_id }}/ndwi_{{ i.s2_id }}_categorized.tif"
 				},
 				{
 					"param": "asset_names",
