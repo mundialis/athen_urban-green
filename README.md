@@ -5,7 +5,7 @@ in Athens from Earth Observation data (Sentinel-2). It combines:
 
 - an actinia + GRASS GIS processing backend,
 - custom GRASS add-ons for Sentinel-2 scene filtering, Sentinel-2 scene download and STAC publishing,
-- process chain templates for NDVI/NDWI production and classification,
+- process chain templates for NDVI/NDWI production and classification.
 
 The main output is a set of geospatial products (NDVI/NDWI and classified
 versions) plus STAC item updates for catalog publication.
