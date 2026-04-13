@@ -8,6 +8,8 @@ All of the following must be launched from within the `docker` directory.
 ```yaml
 ACTINIA_USER=<USER>
 ACTINIA_PW=<PASSWORD>
+EODAG_USER=<CDSE_USER>
+EODAG_PW=<CDSE_PASSWORD>
 ```
 
 ### Build and start docker
