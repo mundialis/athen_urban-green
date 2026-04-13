@@ -201,6 +201,7 @@ Required python depencies for `run_service.py`:
 │       ├── template_S2_download_import.json
 │       └── template_S2_processing.json
 ├── README.md
+├── requirements.txt
 └── ...
 
 ```
