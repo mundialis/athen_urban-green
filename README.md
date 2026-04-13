@@ -129,7 +129,7 @@ docker compose -f docker-compose.yml -p athen_urban-green down
 
 The script in `processing/run_service.py` starts the whole workflow. 
 
-From repository root:
+From repository root folder:
 
 ```bash
 python processing/run_service.py
