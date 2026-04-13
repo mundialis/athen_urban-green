@@ -58,7 +58,7 @@ Jinja2 templates in `./processing/templates/`. Variables are parsed in `run_serv
 
 #### Actinia Process Templates
 
-Actinia module templates in `./processing/templates/`. Are used in by `process_chain_S2_processing.json.j2`.
+Actinia module templates in `./processing/templates/` are used by `process_chain_S2_processing.json.j2`.
 
 - `template_S2_processing.json` 
     - process template to run the main processing steps for a Sentinel-2 scene: import, NDVI/NDWI calculation, classification, export, and STAC item creation. Calls the following templates for specific steps:
