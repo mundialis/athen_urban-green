@@ -40,11 +40,11 @@ In `./grass-gis-addons/`
 
 In `./processing/scripts/`
 
-- create_export_subfolders.py
+- `create_export_subfolders.py`
     - utility script to create export directory for exported COGs. Directory is parsed in process chain template.
-- remove_data.py
+- `remove_data.py`
     - cleanup script to remove downloaded Sentinel-2 SAFE files.
-- rename_bands.py
+- `rename_bands.py`
     - utility script to rename imported raster bands in GRASS location for further processing.
 
 #### Actinia Process Chains 
@@ -152,9 +152,9 @@ Important script parameters to adapt before production runs:
 **Note for a local setup**: Adding STAC item to a collection only works if you have write access to the collection. 
 
 Required python depencies for `run_service.py`:
-- requests
-- dotenv
-- jinja2
+- `requests`
+- `dotenv`
+- `jinja2`
 
 ## Troubleshooting
 
