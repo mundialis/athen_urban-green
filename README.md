@@ -151,7 +151,7 @@ Important script parameters to adapt before production runs:
 
 **Note for a local setup**: Adding STAC item to a collection only works if you have write access to the collection. 
 
-Required python depencies for `run_service.py`:
+Required python depencies for `run_service.py` are listed in `requirements.txt` and include:
 - `requests`
 - `dotenv`
 - `jinja2`
