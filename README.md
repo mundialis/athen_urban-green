@@ -105,7 +105,7 @@ docker compose -f docker-compose.yml -p athen_urban-green build --no-cache
 
 ### 3. Start containers
 
-For a **Local Setup:** you need to mount a local directory for data export. Add to volumes fo actinia `/path/to/local/export/dir:/src/export_dir`
+For a **Local Setup:** you need to mount a local directory for data export. Add to volumes for actinia `/path/to/local/export/dir:/src/export_dir`, then:
 
 ```bash
 docker compose -f docker-compose.yml -p athen_urban-green up
