@@ -95,12 +95,12 @@
 			"module": "i.create.stac",
 			"inputs": [
 				{
-					"param": "asset_paths",
+					"param": "product_paths",
 					"value": "/src/export_dir/{{ i.year }}/{{ tile_id }}/ndvi_{{ i.s2_id }}.tif,/src/export_dir/{{ i.year }}/{{ tile_id }}/ndvi_{{ i.s2_id }}_categorized.tif,/src/export_dir/{{ i.year }}/{{ tile_id }}/ndwi_{{ i.s2_id }}.tif,/src/export_dir/{{ i.year }}/{{ tile_id }}/ndwi_{{ i.s2_id }}_categorized.tif"
 				},
 				{
-					"param": "asset_names",
-					"value": "{{ asset_names }}"
+					"param": "product_names",
+					"value": "{{ product_names }}"
 				},
 				{
 					"param": "s2_id",
@@ -123,8 +123,8 @@
 					"value": "{{ stac_catalog_url }}"
 				},
 				{
-					"param": "stac_collection",
-					"value": "{{ stac_collection }}"
+					"param": "stac_collections",
+					"value": "{{ stac_collections }}"
 				}
 			]
 		},

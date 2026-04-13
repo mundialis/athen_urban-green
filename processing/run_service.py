@@ -61,10 +61,10 @@ ENV_PATH = "docker/.env"
 
 # STAC catalog variables
 STAC_CATALOG_URL = "http://pycsw:8000/stac/"
-STAC_COLLECTION = "urban_green_monitoring"
+STAC_COLLECTIONS = "ndvi-ath,ndvi-cat-ath,ndwi-ath,ndwi-cat-ath"
 
 # STAC item metadata
-ASSET_NAMES = "NDVI,NDVI_classified,NDWI,NDWI_classified"
+PRODUCT_NAMES = "NDVI,NDVI_categorized,NDWI,NDWI_categorized"
 STAC_ITEM_ID_PREFIX = "athen_urban_green"
 STAC_ITEM_TITLE = "Urban Green Monitoring Athens"
 STAC_ITEM_DESCRIPTION = (
@@ -263,12 +263,12 @@ def main() -> None:
     pc_variables_processing = {
         "iteration": process_results_json,
         "tile_id": TILE_ID,
-        "asset_names": ASSET_NAMES,
+        "product_names": PRODUCT_NAMES,
         "stac_item_id_prefix": STAC_ITEM_ID_PREFIX,
         "stac_item_title": STAC_ITEM_TITLE,
         "stac_item_description": STAC_ITEM_DESCRIPTION,
         "stac_catalog_url": STAC_CATALOG_URL,
-        "stac_collection": STAC_COLLECTION,
+        "stac_collections": STAC_COLLECTIONS,
     }
 
     process_chain = update_process_chain_variables(
