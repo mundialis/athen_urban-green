@@ -123,7 +123,7 @@ docker compose -f docker-compose.yml -p athen_urban-green up
 docker compose -f docker-compose.yml -p athen_urban-green down
 ```
 
-## Running processing
+## Run processing
 
 ### Run Service
 
