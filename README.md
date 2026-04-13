@@ -49,7 +49,7 @@ In `./processing/scripts/`
 
 #### Actinia Process Chains 
 
-Jinja2 templates in `./processing/templates/`. Variables are parsed in `run_service.py` and rendered as json before submission to actinia.
+Jinja2 templates in `./processing/templates/`. Variables are parsed in `run_service.py` and rendered as JSON before submission to actinia.
 
 - `process_chain_filter_S2_scenes.json.j2`
     - process chain to run `i.s2_id.filter` and return filtered scene ids.
