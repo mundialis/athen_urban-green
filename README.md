@@ -163,7 +163,7 @@ Required python depencies for `run_service.py`:
 - No scenes returned:
 	- widen time window, increase cloud threshold, verify tile id and AOI.
 - Process polling errors:
-	- inspect Actinia status URL and container logs for detailed module errors.
+	- inspect actinia status URL and container logs for detailed module errors.
 
 ## Repository structure
 
