@@ -67,7 +67,7 @@ Actinia module templates in `./processing/templates/` are used by `process_chain
     - `template_calc_NDVI.json`
         - process template to calculate NDVI and categorize it. Exports layers as COG.
     - `template_calc_NDWI.json`
-        - process template to calculate NDWI and categorize. Exports layers as COG.
+        - process template to calculate NDWI and categorize it. Exports layers as COG.
 
 #### Start service script
 - `processing/run_service.py`
