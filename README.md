@@ -147,7 +147,7 @@ Important script parameters to adapt before production runs:
 - Max. cloud cover threshold (`MAX_CLOUD_COVER`)
 - Actinia base URL and processing endpoint and GRASS location settings
 - STAC catalog URL and collection names
-- STAC Item metadata settings (e.g. collection extent update, item asset metadata)
+- STAC item metadata settings (e.g. collection extent update, item asset metadata)
 
 **Note for a local setup**: Adding STAC item to a collection only works if you have write access to the collection. 
 
