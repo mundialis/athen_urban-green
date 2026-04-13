@@ -142,7 +142,7 @@ Important script parameters to adapt before production runs:
 - AOI: By default, the script uses a predefined AOI for Athens in `processing/input/athens_aoi.geojson`. 
     - To use a different AOI, replace this file with a new GeoJSON containing the desired AOI geometry (and rebuild image).
     - Or specify a bounding box by setting `LONMIN`, `LONMAX`, `LATMIN`, `LATMAX`. 
-        - **ToDo**: Currently -a flag is set for i.s2_id.filter in process chain. This enables AOI filtering based on predifines AOI. For bounding box filtering -a flag must be removed. --> implement automatic flag removal when bounding box parameters are set.
+        - **Note**: Currently `-a` flag is set for `i.s2_id.filter` in process chain. This enables AOI filtering based on predifined AOI. For bounding box filtering `-a` flag must be removed. --> TODO: implement automatic flag removal when bounding box parameters are set.
 - `TILE_ID`: Sentinel-2 tile identifier e.g. `34SGH` for Athens area
 - Max. cloud cover threshold (`MAX_CLOUD_COVER`)
 - Actinia base URL, processing endpoint and GRASS location settings
