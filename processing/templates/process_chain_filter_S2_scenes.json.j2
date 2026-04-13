@@ -13,7 +13,8 @@
       "id": "i_s2_id_filter",
       "module": "i.s2_id.filter",
       "inputs": {{ inputs | tojson }},
-      "flags": "{{ 'at' if automatic_time_range else 'a' }}"
+      "flags": "{{ 'at' if automatic_time_range else 'a' }}",
+      "stdout": {"id": "s2_ids", "format": "list", "delimiter": ","}
     }
   ],
   "version": "1"
