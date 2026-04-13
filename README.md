@@ -63,7 +63,7 @@ Actinia module templates in `./processing/templates/` are used by `process_chain
 - `template_S2_processing.json` 
     - process template to run the main processing steps for a Sentinel-2 scene: import, NDVI/NDWI calculation, classification, export, and STAC item creation. Calls the following templates for specific steps:
     - `template_S2_download_import.json`
-        - process template to download Sentinel-2 scenes using `i.s2_id.download` and import bands using `i.sentinel.import`.
+        - process template to download Sentinel-2 scenes using `i.s2_id.download` and to import bands using `i.sentinel.import`.
     - `template_calc_NDVI.json`
         - process template to calculate NDVI and categorize. Exports layers as COG.
     - `template_calc_NDWI.json`
