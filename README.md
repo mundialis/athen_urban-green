@@ -161,7 +161,7 @@ Required python depencies for `run_service.py`:
 - Authentication failures:
 	- verify `ACTINIA_USER`, `ACTINIA_PW`, `EODAG_USER`, `EODAG_PW` in `docker/.env`.
 - No scenes returned:
-	- widen time window, increase cloud threshold, verify tile id and AOI.
+	- widen time window, increase cloud threshold, verify tile ID and AOI.
 - Process polling errors:
 	- inspect actinia status URL and container logs for detailed module errors.
 
