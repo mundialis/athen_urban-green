@@ -32,7 +32,7 @@ The workflow in this repository is designed to:
 
 ## Main components
 
-#### Custom GRASS Addons
+### Custom GRASS Addons
 
 In `./grass-gis-addons/`
 
@@ -47,7 +47,7 @@ In `./grass-gis-addons/`
     existing STAC catalog/collection. Also updates collection extents. Uses
     `pystac` and `rio-stac`.
 
-#### Scripts
+### Scripts
 
 In `./processing/scripts/`
 
@@ -60,7 +60,7 @@ In `./processing/scripts/`
   - utility script to rename imported raster bands in GRASS location for further
     processing.
 
-#### Actinia Process Chains
+### Actinia Process Chains
 
 Jinja2 templates in `./processing/templates/`. Variables are parsed in
 `run_service.py` and rendered as JSON before submission to actinia.
@@ -70,7 +70,7 @@ Jinja2 templates in `./processing/templates/`. Variables are parsed in
 - `process_chain_S2_processing.json.j2`
   - process chain to trigger processing for parsed Sentinel-2 scene ids.
 
-#### Actinia Process Templates
+### Actinia Process Templates
 
 Actinia module templates in `./processing/templates/` are used by
 `process_chain_S2_processing.json.j2`.
@@ -89,7 +89,7 @@ Actinia module templates in `./processing/templates/` are used by
     - process template to calculate NDWI and categorize it. Exports layers as
       COG.
 
-#### Start service script
+### Start service script
 
 - `processing/run_service.py`
   - script to run the whole workflow. Parses parameters, renders process chain
