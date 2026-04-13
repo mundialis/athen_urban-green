@@ -9,8 +9,12 @@
           "value": {{ iteration | tojson }}
         },
         {
-          "param": "asset_names",
-          "value": "{{ asset_names }}"
+          "param": "tile_id",
+          "value": "{{ tile_id }}"
+        },
+        {
+          "param": "product_names",
+          "value": "{{ product_names }}"
         },
         {
           "param": "stac_item_id_prefix",
@@ -29,8 +33,8 @@
           "value": "{{ stac_catalog_url }}"
         },
         {
-          "param": "stac_collection",
-          "value": "{{ stac_collection }}"
+          "param": "stac_collections",
+          "value": "{{ stac_collections }}"
         }
       ]
     }
