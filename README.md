@@ -32,7 +32,7 @@ In `./grass-gis-addons/`
 - `i.s2_id.filter`
     - Module to query Sentinel-2 metadata via `EODAG` and return scene IDs based on filters (date, AOI, tile id, cloud cover).
 - `i.s2_id.download`
-    - Module to download using `EODAG` selected Sentinel-2 scenes. Import bands using `i.sentinel.import` for processing.
+    - Module to download selected Sentinel-2 scenes using `EODAG`. Imports bands using `i.sentinel.import` for processing.
 - `i.create.stac`
     - Module to create a STAC item from exported assets and publish it to an existing STAC catalog/collection. Also updates collection extents. Uses `pystac` and `rio-stac`.
 
