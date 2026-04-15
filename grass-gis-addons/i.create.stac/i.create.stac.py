@@ -114,16 +114,6 @@ def main() -> None:
             "match."
         )
 
-    # # create dict from asset_paths and asset_names
-    # bands_assets = {
-    #     name: pystac.Asset(
-    #         path,
-    #         roles=["data"],
-    #         media_type=pystac.MediaType.COG,
-    #     )
-    #     for name, path in zip(asset_names, asset_paths, strict=True)
-    # }
-
     # extract datetime from Sentinel-2 ID
     # e.g. S2C_MSIL2A_20251203T092351_N0511_R093_T35SKC_20251203T130213
     s2_datetime = datetime.datetime.strptime(
@@ -148,7 +138,7 @@ def main() -> None:
             # assets=bands_assets,
             with_proj=True,
             properties={
-                "title": f"{stac_item_title}- {product_name} - {s2_datetime}",
+                "title": f"{stac_item_title} - {product_name} - {s2_datetime}",
                 "description": stac_item_description,
                 "S2_ID": s2_id,
             },
@@ -180,9 +170,6 @@ def main() -> None:
         except requests.exceptions.RequestException as e:
             grass.fatal(f"Error occurred while fetching items: {e}")
 
-        # items_fetched = []
-        # for feat in items_json["features"]:
-        #     items_fetched.append(pystac.Item.from_dict(feat))
         items_fetched = [
             pystac.Item.from_dict(feat) for feat in items_json["features"]
         ]
