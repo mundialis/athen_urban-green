@@ -23,11 +23,12 @@ The workflow in this repository is designed to:
 
 1. Filter Sentinel-2 scenes by date range, AOI, tile id, and cloud cover.
 2. Download and import selected scenes into GRASS GIS.
-3. Compute NDVI and NDWI maps.
-4. Classify NDVI/NDWI outputs using configured categories for vegetation health
-   assessment.
-5. Export raster outputs as COG.
-6. Create and publish STAC items to an existing STAC catalog/collection and
+3. Use L2A cloud probability layer to mask out clouds. Cloud proabability threshold is set to 65 %. (Could be changed in `processing/templates/template_S2_download_import.json`). See also [i.sentinel.import](https://grass.osgeo.org/grass-stable/manuals/addons/i.sentinel.import.html).
+4. Compute NDVI and NDWI maps.
+5. Classify NDVI/NDWI outputs using configured categories for vegetation health
+   assessment. The threshold for the categorization is set in `processing/input/index_classification/*classes`.
+6. Export raster outputs as COG.
+7. Create and publish STAC items to an existing STAC catalog/collection and
    update collection extent metadata.
 
 ## Main components
@@ -158,27 +159,54 @@ From repository root folder:
 python processing/run_service.py
 ```
 
+#### Script parameters
+
 Important script parameters to adapt before production runs:
 
+**Sentinel-2 query parameters:**
+
 - Time range (`START_TIME`, `END_TIME`, or automatic time range mode) for
-  filtering Sentinel-2 scenes. Options:
-  - autmatic time range mode: Queries given STAC collection for latest item and
-    sets `START_TIME` accordingly and `END_TIME` to current time.
-- AOI: By default, the script uses a predefined AOI for Athens in
-  `processing/input/athens_aoi.geojson`.
-  - To use a different AOI, replace this file with a new GeoJSON containing the
-    desired AOI geometry (and rebuild image).
-  - Or specify a bounding box by setting `LONMIN`, `LONMAX`, `LATMIN`, `LATMAX`.
-    - **Note**: Currently `-a` flag is set for `i.s2_id.filter` in process
-      chain. This enables AOI filtering based on predifined AOI. For bounding
-      box filtering `-a` flag must be removed. --> TODO: implement automatic
-      flag removal when bounding box parameters are set.
+  filtering Sentinel-2 scenes. 
+
+  **Options:**  
+  1. **manual time range:** Set `START_TIME` and `END_TIME` e.g. `START_TIME = "2026-04-05"` 
+  and `END_TIME = "2026-04-10"`
+  2. **automatic time range:** Queries given STAC collection `STAC_COLLECTION_URL` 
+  for latest item and
+    sets `START_TIME` accordingly and `END_TIME` to current time. For the 
+    current settings, the collection `ndvi-ath` is used which is updated with 
+    each workflow run. Check with names defined in `STAC_COLLECTIONS`.
 - `TILE_ID`: Sentinel-2 tile identifier e.g. `34SGH` for Athens area
-- Max. cloud cover threshold (`MAX_CLOUD_COVER`)
-- Actinia base URL, processing endpoint and GRASS location settings
-- STAC catalog URL and collection names
-- STAC item metadata settings (e.g. collection extent update, item asset
-  metadata)
+- `MAX_CLOUD_COVER`: Max. cloud cover threshold
+- AOI: By default, the script uses a predefined AOI for Athens in `processing/input/athens_aoi.geojson`.
+  - To use a different AOI, replace this file with a new GeoJSON containing the desired AOI geometry (and rebuild image).
+  - Or specify a bounding box by setting `LONMIN`, `LONMAX`, `LATMIN`, `LATMAX`.
+    - **Note:** Currently `-a` flag is set for i.s2_id.filter in process chain. This enables AOI filtering based on predifined AOI. For bounding box filtering `-a` flag must be removed. --> **TODO**: implement automatic flag removal when bounding box parameters are set.
+
+
+
+**actinia process parameters:**
+
+It should not be necessary to change these parameters. To be able to reach 
+actinia a correct actinia base URL (`ACTINIA_BASE_URL`) is required. The default
+ of this setup is `http://localhost:8088/`.
+
+**STAC parameters:**
+
+- `STAC_CATALOG_URL`: Should link to the STAC catalog `"http://pycsw:8000/stac/"`
+- `STAC_COLLECTIONS`: Names of the STAC collections, where the created items are
+ registered.  
+ For this workflow four collections for each product are used: 
+ `"ndvi-ath,ndvi-cat-ath,ndwi-ath,ndwi-cat-ath"`
+- `PRODUCT_NAMES`: Names used for the STAC items of the four products (same 
+order as `STAC_COLLECTIONS`): `"NDVI,NDVI_categorized,NDWI,NDWI_categorized"`
+- `STAC_ITEM_ID_PREFIX`: Defines a prefix for the STAC item IDs: e.g. 
+`"athen_urban_green"` so the STAC item ID will be like this
+`athen_urban_green_NDWI_categorized_20260218T091031` 
+`STAC_ITEM_TITLE`: Title for STAC item. Additionally, product name and date are 
+added to the title. E.g. `Urban Green Monitoring Athens- NDWI_categorized - 2026-02-18 09:10:31+00:00`
+`STAC_ITEM_DESCRIPTION`: Description for STAC item. Currently it is the same 
+text for all products.
 
 **Note for a local setup**: Adding STAC item to a collection only works if you
 have write access to the collection.
@@ -189,6 +217,32 @@ and include:
 - `requests`
 - `dotenv`
 - `jinja2`
+
+## Output layers
+
+The main output layers are export as Cloud Optimized GeoTIFFs (COG):
+- NDVI (Normalized Difference Vegetation Index)
+- Categorized NDVI  
+- NDWI (Normalized Difference Water Index) maps in COG format.
+- Categorized NDWI
+
+Categorization thresholds for NDVI and NDWI are defined in `processing/input/index_classification/ndvi_4_classes` and `processing/input/index_classification/ndwi_3_classes`.
+
+Uses equations:
+- NDVI = (NIR - Red) / (NIR + Red)
+- NDWI = (( NIR - SWIR ) / ( NIR + SWIR ))
+
+NDVI classes (raster values in brackets):
+- no vegetation (1): -1 to 0.1
+- bare soil (2): 0.1 to 0.2
+- sparse/stressed vegetation (3): 0.2 to 0.5 
+- dense/healthy vegetation (4): 0.5 to 1.0 
+
+NDWI classes (raster values in brackets):
+- barren (1): -1 to -0.1
+- water stress (2): 0.1 to 0.4
+- no water stress (3): 0.4 to 1.0
+
 
 ## Troubleshooting
 
