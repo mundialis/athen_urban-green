@@ -166,15 +166,15 @@ Important script parameters to adapt before production runs:
 **Sentinel-2 query parameters:**
 
 - Time range (`START_TIME`, `END_TIME`, or automatic time range mode) for
-  filtering Sentinel-2 scenes. 
+  filtering Sentinel-2 scenes.
 
-  **Options:**  
-  1. **manual time range:** Set `START_TIME` and `END_TIME` e.g. `START_TIME = "2026-04-05"` 
+  **Options:**
+  1. **manual time range:** Set `START_TIME` and `END_TIME` e.g. `START_TIME = "2026-04-05"`
   and `END_TIME = "2026-04-10"`
-  2. **automatic time range:** Queries given STAC collection `STAC_COLLECTION_URL` 
+  2. **automatic time range:** Queries given STAC collection `STAC_COLLECTION_URL`
   for latest item and
-    sets `START_TIME` accordingly and `END_TIME` to current time. For the 
-    current settings, the collection `ndvi-ath` is used which is updated with 
+    sets `START_TIME` accordingly and `END_TIME` to current time. For the
+    current settings, the collection `ndvi-ath` is used which is updated with
     each workflow run. Check with names defined in `STAC_COLLECTIONS`.
 - `TILE_ID`: Sentinel-2 tile identifier e.g. `34SGH` for Athens area
 - `MAX_CLOUD_COVER`: Max. cloud cover threshold
@@ -187,7 +187,7 @@ Important script parameters to adapt before production runs:
 
 **actinia process parameters:**
 
-It should not be necessary to change these parameters. To be able to reach 
+It should not be necessary to change these parameters. To be able to reach
 actinia a correct actinia base URL (`ACTINIA_BASE_URL`) is required. The default
  of this setup is `http://localhost:8088/`.
 
@@ -195,17 +195,17 @@ actinia a correct actinia base URL (`ACTINIA_BASE_URL`) is required. The default
 
 - `STAC_CATALOG_URL`: Should link to the STAC catalog `"http://pycsw:8000/stac/"`
 - `STAC_COLLECTIONS`: Names of the STAC collections, where the created items are
- registered.  
- For this workflow four collections for each product are used: 
+ registered.
+ For this workflow four collections for each product are used:
  `"ndvi-ath,ndvi-cat-ath,ndwi-ath,ndwi-cat-ath"`
-- `PRODUCT_NAMES`: Names used for the STAC items of the four products (same 
+- `PRODUCT_NAMES`: Names used for the STAC items of the four products (same
 order as `STAC_COLLECTIONS`): `"NDVI,NDVI_categorized,NDWI,NDWI_categorized"`
-- `STAC_ITEM_ID_PREFIX`: Defines a prefix for the STAC item IDs: e.g. 
+- `STAC_ITEM_ID_PREFIX`: Defines a prefix for the STAC item IDs: e.g.
 `"athen_urban_green"` so the STAC item ID will be like this
-`athen_urban_green_NDWI_categorized_20260218T091031` 
-`STAC_ITEM_TITLE`: Title for STAC item. Additionally, product name and date are 
+`athen_urban_green_NDWI_categorized_20260218T091031`
+`STAC_ITEM_TITLE`: Title for STAC item. Additionally, product name and date are
 added to the title. E.g. `Urban Green Monitoring Athens- NDWI_categorized - 2026-02-18 09:10:31+00:00`
-`STAC_ITEM_DESCRIPTION`: Description for STAC item. Currently it is the same 
+`STAC_ITEM_DESCRIPTION`: Description for STAC item. Currently it is the same
 text for all products.
 
 **Note for a local setup**: Adding STAC item to a collection only works if you
@@ -222,7 +222,7 @@ and include:
 
 The main output layers are export as Cloud Optimized GeoTIFFs (COG):
 - NDVI (Normalized Difference Vegetation Index)
-- Categorized NDVI  
+- Categorized NDVI
 - NDWI (Normalized Difference Water Index) maps in COG format.
 - Categorized NDWI
 
@@ -235,8 +235,8 @@ Uses equations:
 NDVI classes (raster values in brackets):
 - no vegetation (1): -1 to 0.1
 - bare soil (2): 0.1 to 0.2
-- sparse/stressed vegetation (3): 0.2 to 0.5 
-- dense/healthy vegetation (4): 0.5 to 1.0 
+- sparse/stressed vegetation (3): 0.2 to 0.5
+- dense/healthy vegetation (4): 0.5 to 1.0
 
 NDWI classes (raster values in brackets):
 - barren (1): -1 to -0.1
