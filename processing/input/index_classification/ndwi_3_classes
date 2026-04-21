@@ -1,3 +1,5 @@
--1000 thru -100   = 1 barren soil
--100 thru 400     = 2 water stress
-400 thru 1000 = 3 no water stress
+-1000 thru -200   = 1 barren soil
+-200 thru 0     = 2  strong water stress
+0 thru 100 = 3 medium water stress
+100 thru 200 = 3 low water stress
+200 thru 1000 = 3 no water stress

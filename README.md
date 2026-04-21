@@ -211,7 +211,7 @@ text for all products.
 **Note for a local setup**: Adding STAC item to a collection only works if you
 have write access to the collection.
 
-Required python depencies for `run_service.py` are listed in `requirements.txt`
+Required python dependencies for `run_service.py` are listed in `requirements.txt`
 and include:
 
 - `requests`
@@ -220,10 +220,10 @@ and include:
 
 ## Output layers
 
-The main output layers are export as Cloud Optimized GeoTIFFs (COG):
+The main output layers are exported as Cloud Optimized GeoTIFFs (COG):
 - NDVI (Normalized Difference Vegetation Index)
 - Categorized NDVI
-- NDWI (Normalized Difference Water Index) maps in COG format.
+- NDWI (Normalized Difference Water Index)
 - Categorized NDWI
 
 Categorization thresholds for NDVI and NDWI are defined in `processing/input/index_classification/ndvi_4_classes` and `processing/input/index_classification/ndwi_3_classes`.
@@ -239,9 +239,11 @@ NDVI classes (raster values in brackets):
 - dense/healthy vegetation (4): 0.5 to 1.0
 
 NDWI classes (raster values in brackets):
-- barren (1): -1 to -0.1
-- water stress (2): 0.1 to 0.4
-- no water stress (3): 0.4 to 1.0
+- barren soil (1): -1000 to -200  
+- strong water stress (2): -200 to 0  
+- medium water stress (3): 0 to 100  
+- low water stress (4): 100 to 200  
+- no water stress (5): 200 to 1000
 
 
 ## Troubleshooting
