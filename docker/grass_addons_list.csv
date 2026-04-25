@@ -1,4 +1,9 @@
+# official GRASS addons
 i.sentinel.import
-i.s2_id.download,/src/grass-gis-addons/i.s2_id.download
-i.s2_id.filter,/src/grass-gis-addons/i.s2_id.filter
+
+# mundialis GRASS addons published on GitHub
+i.s2_id.download,https://github.com/mundialis/i.s2_id.download
+i.s2_id.filter,https://github.com/mundialis/i.s2_id.filter
+
+# GRASS addons from this repo
 i.create.stac,/src/grass-gis-addons/i.create.stac
