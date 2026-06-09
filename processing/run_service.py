@@ -72,6 +72,9 @@ STAC_ITEM_DESCRIPTION = (
     "spaces monitoring."
 )
 
+# STAC item asset href directory
+ASSET_DIR = "/data"
+
 
 # ### FUNCTIONS ###
 # helper function to print formatted JSON using the json module
@@ -269,6 +272,7 @@ def main() -> None:
         "stac_item_description": STAC_ITEM_DESCRIPTION,
         "stac_catalog_url": STAC_CATALOG_URL,
         "stac_collections": STAC_COLLECTIONS,
+        "asset_dir": ASSET_DIR,
     }
 
     process_chain = update_process_chain_variables(
