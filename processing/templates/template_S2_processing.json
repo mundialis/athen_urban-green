@@ -127,8 +127,8 @@
 					"value": "{{ stac_collections }}"
 				},
 				{
-					"param": "asset_href_dir",
-					"value": "{{ asset_href_dir }}"
+					"param": "asset_dir",
+					"value": "{{ asset_dir }}"
 				}
 			]
 		},

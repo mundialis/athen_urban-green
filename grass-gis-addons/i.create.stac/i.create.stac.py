@@ -80,8 +80,8 @@
 # %end
 
 # %option
-# % key: asset_href_dir
-# % description: Directory for asset hrefs
+# % key: asset_dir
+# % description: Directory for asset to construct download URL
 # % required: yes
 # % type: string
 # %end
@@ -106,7 +106,7 @@ def main() -> None:
     stac_item_description = options["stac_description"]
     stac_catalog = options["stac_catalog"]
     stac_collections_str = options["stac_collections"]
-    asset_href_dir = options["asset_href_dir"]
+    asset_dir = options["asset_dir"]
 
     # convert assets string to list
     product_paths = [asset.strip() for asset in product_paths_str.split(",")]
@@ -143,7 +143,7 @@ def main() -> None:
             source=product_path,
             id=stac_item_id,
             input_datetime=s2_datetime,
-            asset_href=product_path.replace("/src/export_dir", asset_href_dir),
+            asset_href=product_path.replace("/src/export_dir", asset_dir),
             with_proj=True,
             properties={
                 "title": f"{stac_item_title} - {product_name} - {s2_datetime}",
