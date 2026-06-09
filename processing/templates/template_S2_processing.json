@@ -125,6 +125,10 @@
 				{
 					"param": "stac_collections",
 					"value": "{{ stac_collections }}"
+				},
+				{
+					"param": "asset_dir",
+					"value": "{{ asset_dir }}"
 				}
 			]
 		},
