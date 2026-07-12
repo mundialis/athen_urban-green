@@ -1,4 +1,4 @@
-## Description
+# Description
 
 *i.create.stac* creates and publishes STAC items for raster products,
 deriving the item timestamp from a Sentinel-2 scene identifier. Each

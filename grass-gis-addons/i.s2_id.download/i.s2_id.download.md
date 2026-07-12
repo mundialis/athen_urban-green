@@ -1,4 +1,4 @@
-## Description
+# Description
 
 *i.s2_id.download* Downloads S2 scene from Copernicus Data Space by
 given ID using the EODAG library.
