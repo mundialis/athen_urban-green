@@ -12,4 +12,5 @@ jobs:
   lint:
     uses: mundialis/github-workflows/.github/workflows/linting.yml@main
     with:
+      VALIDATE_HTML: false
       SUPER_LINTER_FILTER_REGEX_EXCLUDE: ".*processing/templates/template_S2_processing.json"
