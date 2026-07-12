@@ -1,4 +1,4 @@
-# Description
+## Description
 
 *i.s2_id.filter* Filter S2 scenes via given search parameter using the
 EODAG library. With **-a** flag the current region is used as AOI for
