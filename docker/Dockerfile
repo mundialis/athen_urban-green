@@ -1,4 +1,4 @@
-FROM mundialis/actinia:2.12.2
+FROM mundialis/actinia:2.15.3
 
 COPY docker/requirements.txt /src/requirements.txt
 
